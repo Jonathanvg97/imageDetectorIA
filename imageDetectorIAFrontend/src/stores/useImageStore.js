@@ -10,11 +10,14 @@ export const useImageStore = create(zukeeper(set => ({
     setTextTranslated: (textTranslated) => set({ textTranslated }),
     originalText: false,
     setOriginalText: (originalText) => set({ originalText }),
+    isDog: false,
+    setIsDog: (isDog) => set({ isDog: isDog }),
     reset: () => set({
         imageURL: '',
         imageDescription: '',
         textTranslated: null,
-        originalText: false
+        originalText: false,
+        isDog: false
     }),
 })));
 

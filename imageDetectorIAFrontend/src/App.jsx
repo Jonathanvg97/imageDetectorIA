@@ -1,11 +1,13 @@
-import { ImageToConvertForm } from './components/imageToConvertForm/imageToConvertForm';
-import './index.css';
+// import { ImageToConvertForm } from './components/imageToConvertForm/imageToConvertForm';
+import { BrowserRouter as Router } from "react-router-dom";
+import "./index.css";
+import { RoutesConfig } from "./routes";
 
 function App() {
   return (
-    <div className="bg-gray-800 h-screen">
-      <ImageToConvertForm />
-    </div>
+    <Router>
+      <RoutesConfig />
+    </Router>
   );
 }
 

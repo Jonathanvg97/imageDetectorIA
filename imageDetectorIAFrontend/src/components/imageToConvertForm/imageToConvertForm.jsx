@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import { convertImageToText } from "../../server/convertImageToText";
 import { PreviewImage } from "../previewImage/previewImage";
 import { useImageStore } from "../../stores/useImageStore";
+import { DogDetectionImage } from "../dogDetectionImage/dogDetectionImage";
+import { useNavigate } from "react-router-dom";
 
 export const ImageToConvertForm = () => {
-    //lOCAL STATE
+    const navigate = useNavigate();
+    // LOCAL STATE
     const [loading, setLoading] = useState(false);
-    //STORE WITH ZUSTAND
+    // STORE WITH ZUSTAND
     const {
         imageURL,
         setImageURL,
@@ -40,10 +43,14 @@ export const ImageToConvertForm = () => {
         }
     }, [imageURL, reset]);
 
+    const handleURLChange = (e) => {
+        setImageURL(e.target.value.trim()); // Elimina espacios al inicio y al final
+    };
+
     return (
         <div className="ImageToConvertForm min-h-screen flex justify-center items-center p-4">
             <div className="w-[50%] flex justify-center items-center">
-                <PreviewImage />
+                <PreviewImage isDogDetection={false} />
             </div>
             <div className="p-4 rounded-lg w-[50%] flex flex-col items-center">
                 <h1 className="text-4xl font-bold mb-4 text-center text-cyan-50">
@@ -64,7 +71,7 @@ export const ImageToConvertForm = () => {
                             type="text"
                             id="imageURL"
                             value={imageURL}
-                            onChange={(e) => setImageURL(e.target.value)}
+                            onChange={handleURLChange}
                             className="border border-gray-300 rounded p-2"
                             required
                             style={{ borderRadius: "10px", width: "400px" }}
@@ -81,6 +88,13 @@ export const ImageToConvertForm = () => {
                         </button>
                     </div>
                 </form>
+                {imageURL && (
+                    <>
+                        <button onClick={() => navigate("/detect-dog")}>
+                            <DogDetectionImage />
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     );
