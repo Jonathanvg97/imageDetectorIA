@@ -2,7 +2,7 @@ import { useState } from "react";
 import { translateText } from "../../server/translateText";
 import { useImageStore } from "../../stores/useImageStore"; // Importa la store
 
-export const PreviewImage = () => {
+export const PreviewImage = ({ isDogDetection = false }) => {
     const {
         imageDescription,
         imageURL,
@@ -46,7 +46,7 @@ export const PreviewImage = () => {
             ) : (
                 <p className="text-gray-500">No image to display</p>
             )}
-            {imageURL && imageDescription && (
+            {imageURL && imageDescription && !isDogDetection && (
                 <div className="mt-4 p-4 bg-white rounded shadow-md w-full text-center mb-3">
                     <h2 className="text-lg font-medium">Image Description:</h2>
                     <p className="text-gray-800">
@@ -54,7 +54,7 @@ export const PreviewImage = () => {
                     </p>
                 </div>
             )}
-            {imageURL && (
+            {imageURL && !isDogDetection && (
                 <>
                     {imageDescription && originalText ? (
                         <button
