@@ -1,5 +1,6 @@
 {
   "name": "imagedetectoriafrontend",
+  "description": "Image Detector IA Frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,6 +10,12 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "keywords": [
+    "image",
+    "detector",
+    "ia"
+  ],
+  "author": "Jonathan Vanegas",
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

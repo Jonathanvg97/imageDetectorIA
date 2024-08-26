@@ -1,15 +1,15 @@
 {
   "name": "imagedetectoria",
   "version": "1.0.0",
-  "description": "",
+  "description": "Image Detector IA Backend",
   "main": "src/app.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/app.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [ "image", "detector", "ia" ],
+  "author": "Jonathan Vanegas",
   "license": "ISC",
   "dependencies": {
     "@huggingface/inference": "^2.8.0",
