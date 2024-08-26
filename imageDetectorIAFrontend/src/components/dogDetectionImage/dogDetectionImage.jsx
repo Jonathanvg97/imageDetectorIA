@@ -1,4 +1,4 @@
-import { LottieAnimation } from "../utils/lottieAnimation";
+import { DogAnimation } from "../utils/dogAnimation";
 
 export const DogDetectionImage = () => {
     return (
@@ -7,7 +7,7 @@ export const DogDetectionImage = () => {
                 Do you want to detect if there is a dog in the image ?
             </h2>
             <div className="bg-slate-200 rounded-full">
-                <LottieAnimation />
+                <DogAnimation />
             </div>
 
             <div className="mt-4 text-lg text-gray-800 text-center"></div>
