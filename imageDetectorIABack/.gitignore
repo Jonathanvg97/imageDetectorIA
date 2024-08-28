@@ -1,1 +1,12 @@
 .env
+node_modules/
+
+.npm
+
+.nuxt
+dist
+
+.temp
+
+logs
+*.log
