@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
-    "build": "tsc && npm run",
+    "build": "tsc",
     "start": "node dist/app.js"
   },
   "keywords": [
@@ -16,12 +16,6 @@
   ],
   "author": "Jonathan Vanegas",
   "license": "ISC",
-  "devdependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/node": "^22.5.1",
-    "ts-node-dev": "^2.0.0"
-  },
   "dependencies": {
     "@huggingface/inference": "^2.8.0",
     "@types/cookie-parser": "^1.4.7",

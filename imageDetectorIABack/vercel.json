@@ -2,14 +2,17 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/app.js",
-      "use": "@vercel/node"
+      "src": "src/app.ts",
+      "use": "@vercel/node",
+      "config": {
+        "maxLambdaSize": "50mb"
+      }
     }
   ],
   "routes": [
     {
-      "src": "/.*",
-      "dest": "dist/app.js"
+      "src": "/(.*)",
+      "dest": "/dist/app.js"
     }
   ]
 }
