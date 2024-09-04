@@ -40,8 +40,13 @@ export async function translateText(
   const result = await hf.translation({
     model: modelUsed,
     inputs: text,
-    parameters: parameters,
+    ...(parameters && { parameters }), // Solo agregar parámetros si existen
   });
 
-  return result.translation_text;
+  // Manejo del resultado dependiendo si es un array o un solo objeto
+  if (Array.isArray(result)) {
+    return result[0].translation_text;
+  } else {
+    return result.translation_text;
+  }
 }

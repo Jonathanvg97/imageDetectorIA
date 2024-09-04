@@ -10,10 +10,10 @@ const hf = new HfInference(envs.TOKEN_HUGGING_FACE || "");
  * @param {string} model - Nombre del modelo a usar.
  * @returns {Promise<string>} - Resultado de la API.
  */
-export async function imageToText(
+export const imageToText = async (
   imageURL: string,
   model: string
-): Promise<string> {
+): Promise<string> => {
   // Descargar la imagen
   const response = await fetch(imageURL);
   const blob = await response.blob();
@@ -25,4 +25,4 @@ export async function imageToText(
   });
 
   return result.generated_text;
-}
+};

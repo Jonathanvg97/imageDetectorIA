@@ -1,12 +1,20 @@
-.env
+# Ignorar directorios y archivos generados por Node.js
 node_modules/
+dist/
 
-.npm
+# Ignorar archivos de configuración local
+.env
 
-.nuxt
-dist
-
-.temp
-
-logs
+# Ignorar archivos de respaldo y caché
 *.log
+*.zip
+*.gz
+
+# Ignorar archivos de compilación de TypeScript
+*.js
+*.map
+
+# No incluir package-lock.json en el control de versiones
+!.gitkeep
+
+.vercel

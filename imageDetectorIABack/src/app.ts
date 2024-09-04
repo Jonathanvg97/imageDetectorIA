@@ -6,7 +6,7 @@ import {
   huggingTranslateRoutes,
 } from "./routes";
 
-// // Usar las rutas de Hugging Face
+// // // Usar las rutas de Hugging Face
 server.use("/api", huggingFaceRoutes);
 server.use("/api", huggingTranslateRoutes);
 server.use("/api", dogDetectionRoutes);
