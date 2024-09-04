@@ -2,7 +2,7 @@
   "name": "imagedetectoria",
   "version": "1.0.0",
   "description": "Image Detector IA Backend",
-  "main": "src/app.js",
+  "main": "dist/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
