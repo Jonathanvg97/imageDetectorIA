@@ -15,6 +15,12 @@ dist/
 *.map
 
 # No incluir package-lock.json en el control de versiones
-!.gitkeep
+package-lock.json
+yarn.lock
 
+# Ignorar otros archivos y directorios generados
+*.tmp
+*.swp
+
+# Configuración de Vercel
 .vercel
