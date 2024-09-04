@@ -19,7 +19,7 @@ export const PreviewImage = ({ isDogDetection = false }) => {
             setLoading(true);
             if (!textTranslated) {
                 const response = await translateText(imageDescription);
-                setTextTranslated(response.translation_text); // Guarda la descripción traducida en la store
+                setTextTranslated(response); // Guarda la descripción traducida en la store
             }
             setOriginalText(false);
 

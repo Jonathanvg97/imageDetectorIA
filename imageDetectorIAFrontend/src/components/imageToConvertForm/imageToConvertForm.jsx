@@ -26,7 +26,7 @@ export const ImageToConvertForm = () => {
             setLoading(true);
             if (!imageDescription) {
                 const data = await convertImageToText(imageURL);
-                setImageDescription(data.generated_text);
+                setImageDescription(data);
                 setOriginalText(true);
             }
         } catch (err) {
