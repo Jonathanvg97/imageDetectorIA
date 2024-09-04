@@ -3,20 +3,39 @@
   "version": "1.0.0",
   "description": "Image Detector IA Backend",
   "main": "src/app.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/app.js"
+    "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
+    "build": "tsc && npm run",
+    "start": "node dist/app.js"
   },
-  "keywords": [ "image", "detector", "ia" ],
+  "keywords": [
+    "image",
+    "detector",
+    "ia"
+  ],
   "author": "Jonathan Vanegas",
   "license": "ISC",
+  "devdependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.1",
+    "ts-node-dev": "^2.0.0"
+  },
   "dependencies": {
     "@huggingface/inference": "^2.8.0",
+    "@types/cookie-parser": "^1.4.7",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "morgan": "^1.10.0",
-    "nodemon": "^3.1.4"
+    "typescript": "^5.5.4"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.4",
+    "ts-node-dev": "^2.0.0"
   }
 }
