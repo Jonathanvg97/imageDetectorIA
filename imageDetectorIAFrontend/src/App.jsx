@@ -1,8 +1,9 @@
-// import { ImageToConvertForm } from './components/imageToConvertForm/imageToConvertForm';
-import { BrowserRouter as Router } from "react-router-dom";
 import "./index.css";
+import 'react-toastify/dist/ReactToastify.css';
+import { BrowserRouter as Router } from "react-router-dom";
 import { RoutesConfig } from "./routes";
 import { GoogleLogin } from '@react-oauth/google';
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           console.log('Login Failed');
         }}
       />
+      <ToastContainer />
       <RoutesConfig />
     </Router>
   );

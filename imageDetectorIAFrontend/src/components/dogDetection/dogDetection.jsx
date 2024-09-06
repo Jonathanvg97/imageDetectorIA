@@ -5,7 +5,8 @@ import { PreviewImage } from "../previewImage/previewImage"
 import { DogAnimation } from "../utils/dogAnimation";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "../utils/loader/loader";
-
+import { getErrorMessageImageToText } from "../utils/errors/imageErrorToTextUtils";
+import { toast } from "react-toastify";
 export const DogDetection = () => {
     // LOCAL STATE
     const [loading, setLoading] = useState(false);
@@ -15,6 +16,8 @@ export const DogDetection = () => {
         imageURL,
         isDog,
         setIsDog,
+        isDetecting,
+        setIsDetecting,
     } = useImageStore();
 
     const navigate = useNavigate();
@@ -30,8 +33,11 @@ export const DogDetection = () => {
                 setIsDog(false);
                 setResult(false);
             }
+            setIsDetecting(true);
+            toast.success("Detection has been successful!");
         } catch (error) {
-            console.error("Error in dog detection:", error);
+            const { status } = error;
+            toast.error(getErrorMessageImageToText(status));
             setIsDog(false); // También establece isDog en false si ocurre un error
         } finally {
             setLoading(false);
@@ -52,7 +58,9 @@ export const DogDetection = () => {
                 <h1 className="text-4xl font-bold mb-4 text-center text-cyan-50">
                     {!result ? "Do you want to detect if there is a dog in the image ?" : isDog ? "Yes, there is a dog" : "No, there is no dog"}
                 </h1>
-                <button className={`${!loading && "bg-slate-200 rounded-full flex mt-10"}`} disabled={loading || result} onClick={handleDogDetection}>
+                {isDetecting && <p className="text-white font-bold my-5">this image has already been detected
+                </p>}
+                <button className={`${!loading && "bg-slate-200 rounded-full flex mt-10"}`} disabled={loading || result || isDetecting} onClick={handleDogDetection}>
                     {!loading ? <DogAnimation /> : <Loader />}
                 </button>
             </div>

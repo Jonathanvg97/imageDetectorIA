@@ -4,6 +4,8 @@ import { PreviewImage } from "../previewImage/previewImage";
 import { useImageStore } from "../../stores/useImageStore";
 import { DogDetectionImage } from "../dogDetectionImage/dogDetectionImage";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getErrorMessageImageToText } from "../utils/errors/imageErrorToTextUtils";
 
 export const ImageToConvertForm = () => {
     const navigate = useNavigate();
@@ -28,10 +30,11 @@ export const ImageToConvertForm = () => {
                 const data = await convertImageToText(imageURL);
                 setImageDescription(data);
                 setOriginalText(true);
+                toast.success("Image converted to text successfully!");
             }
-        } catch (err) {
-            console.error(err);
-            setImageDescription("Error converting image to text.");
+        } catch (error) {
+            const { status } = error;
+            toast.error(getErrorMessageImageToText(status));
         } finally {
             setLoading(false);
         }
@@ -44,7 +47,7 @@ export const ImageToConvertForm = () => {
     }, [imageURL, reset]);
 
     const handleURLChange = (e) => {
-        setImageURL(e.target.value.trim()); // Elimina espacios al inicio y al final
+        setImageURL(e.target.value);
     };
 
     return (

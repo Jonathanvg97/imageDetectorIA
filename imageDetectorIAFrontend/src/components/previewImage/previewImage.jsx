@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { translateText } from "../../server/translateText";
 import { useImageStore } from "../../stores/useImageStore"; // Importa la store
+import { toast } from "react-toastify";
+import { getErrorMessageTranslate } from "../utils/errors/translateError";
 
+// eslint-disable-next-line react/prop-types
 export const PreviewImage = ({ isDogDetection = false }) => {
     const {
         imageDescription,
@@ -12,20 +15,24 @@ export const PreviewImage = ({ isDogDetection = false }) => {
         setOriginalText,
     } = useImageStore();
 
+    // LOCAL STATE
     const [loading, setLoading] = useState(false);
 
+
+    //FUNCTIONS
     const handleTranslateToSpanish = async () => {
         try {
             setLoading(true);
             if (!textTranslated) {
                 const response = await translateText(imageDescription);
                 setTextTranslated(response); // Guarda la descripción traducida en la store
+                toast.success("Text translated successfully.");
             }
             setOriginalText(false);
 
         } catch (error) {
-            console.error(error);
-            setTextTranslated("Error translating text.");
+            const { status } = error;
+            toast.error(getErrorMessageTranslate(status));
         } finally {
             setLoading(false);
         }
@@ -35,13 +42,15 @@ export const PreviewImage = ({ isDogDetection = false }) => {
         setOriginalText(true);
     };
 
+
+    //UI
     return (
         <div className="flex flex-col items-center bg-gray-100 rounded-lg p-4 mt-4">
             {imageURL ? (
                 <img
                     src={imageURL}
                     alt="Preview"
-                    className="max-w-full h-auto rounded-md shadow-md"
+                    className="w-auto h-64 max-h-64 rounded-md shadow-md object-contain"
                 />
             ) : (
                 <p className="text-gray-500">No image to display</p>

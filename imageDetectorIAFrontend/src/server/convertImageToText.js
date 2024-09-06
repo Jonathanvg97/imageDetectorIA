@@ -1,4 +1,5 @@
-// Accede a la variable de entorno
+import { getErrorMessageImageToText } from "../components/utils/errors/imageErrorToTextUtils";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const convertImageToText = async (imageURL) => {
@@ -12,13 +13,13 @@ export const convertImageToText = async (imageURL) => {
         });
 
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw { status: response.status, message: getErrorMessageImageToText(response.status) };
         }
 
-        const data = await response.json();
-        return data;
+
+        return await response.json();
     } catch (error) {
-        console.error('Error in convertImageToText:', error);
+        console.error('Error in convertImageToText:', error.message);
         throw error;
     }
 };

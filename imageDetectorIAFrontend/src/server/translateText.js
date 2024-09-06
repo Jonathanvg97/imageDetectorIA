@@ -1,3 +1,5 @@
+import { getErrorMessageTranslate } from "../components/utils/errors/translateError";
+
 // Accede a la variable de entorno
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,8 +13,9 @@ export const translateText = async (text) => {
             body: JSON.stringify({ text }),
         });
         if (!response.ok) {
-            throw new Error("Network response was not ok");
+            throw { status: response.status, message: getErrorMessageTranslate(response.status) };
         }
+
         const data = await response.json();
         return data;
     } catch (error) {

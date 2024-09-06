@@ -1,3 +1,5 @@
+import { getErrorMessageImageToText } from "../components/utils/errors/imageErrorToTextUtils";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const dogDetectionImage = async (imageURL) => {
@@ -11,8 +13,9 @@ export const dogDetectionImage = async (imageURL) => {
         });
 
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw { status: response.status, message: getErrorMessageImageToText(response.status) };
         }
+
 
         const data = await response.json();
         return data;
