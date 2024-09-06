@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
-import { getClientIp } from "../utils/clientIp"; // Utiliza una función para obtener la IP
+import { getClientIp } from "../utils/clientIp";
 
 const prisma = new PrismaClient();
 
@@ -9,36 +9,34 @@ export const consumptionLimiter = async (
   res: Response,
   next: NextFunction
 ) => {
-  // Obtener la IP del cliente
-  const clientIp = getClientIp(req);
-
-  if (!clientIp) {
-    return res.status(400).json({ error: "Unable to identify the client." });
-  }
-
-  // Convertir la IP de loopback a IPv4 si es necesario
-  const normalizedIp = clientIp === "::1" ? "127.0.0.1" : clientIp;
-
   try {
+    // Obtener la IP del cliente
+    const clientIp = getClientIp(req);
+    if (!clientIp) {
+      return res.status(400).json({ error: "Unable to identify the client." });
+    }
+
+    // Convertir la IP de loopback a IPv4 si es necesario
+    const normalizedIp = clientIp === "::1" ? "127.0.0.1" : clientIp;
+
     // Verificar si ya existe un registro de consumo para la IP
     const consumption = await prisma.consumption.findUnique({
       where: { clientIp: normalizedIp },
     });
 
-    // Si el cliente ha alcanzado el límite, denegar el acceso
-    if (consumption && consumption.count >= 10) {
-      return res.status(403).json({
-        error:
-          "You have exceeded the allowed number of requests. Please log in.",
-      });
-    }
-
-    // Crear o actualizar el registro de consumo
     if (!consumption) {
       await prisma.consumption.create({
         data: { clientIp: normalizedIp, count: 1 },
       });
-    } else {
+      return next(); // Continuar si es la primera petición
+    }
+
+    // Marcar en el request si el límite ha sido alcanzado
+    req.isConsumptionLimitReached = consumption.count >= 4;
+
+    // Actualizar el conteo de peticiones
+    // Si el límite no ha sido alcanzado, actualizar el conteo de peticiones
+    if (!req.isConsumptionLimitReached) {
       await prisma.consumption.update({
         where: { clientIp: normalizedIp },
         data: { count: consumption.count + 1 },
