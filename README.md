@@ -83,6 +83,32 @@ git clone https://github.com/Jonathanvg97/imageDetectorIA.git
 - npm i
 - Agregar las variables de entorno como esta en el .env.template
 
+## Scripts
+
+Este proyecto utiliza varios scripts para facilitar el desarrollo, la compilación y la ejecución del código en diferentes entornos. A continuación se describe cada uno de los scripts disponibles en el archivo `package.json`.
+
+### `migrate:dev`
+
+Este script aplica las migraciones de la base de datos en el entorno de desarrollo utilizando Prisma. Las migraciones se ejecutan con las variables de entorno cargadas desde el archivo `.env.development`.
+
+Comando: npm run migrate:dev
+
+### `build`
+
+Este script compila el código TypeScript a JavaScript para prepararlo para el entorno de producción. Una vez compilado, puedes usar el script start para ejecutar el código en producción.
+
+Comando : npm run build
+
+### `start`
+
+Este script inicia la aplicación en modo producción. Utiliza node para ejecutar el archivo compilado dist/app.js y asegura que la variable de entorno NODE_ENV esté establecida en production.
+
+Comando: npm run start
+
+
+```bash
+
+
 ### Instalacón del Frontend
 
 - Ir a la carpeta del back cd tu-repositorio/Frontend

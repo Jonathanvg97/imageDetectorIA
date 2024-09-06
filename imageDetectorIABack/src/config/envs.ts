@@ -1,4 +1,9 @@
-import "dotenv/config";
+import * as dotenv from "dotenv";
+
+// Carga el archivo .env correcto dependiendo del entorno
+const envFile =
+  process.env.NODE_ENV === "development" ? ".env.development" : ".env";
+dotenv.config({ path: envFile });
 
 export const envs = {
   TOKEN_HUGGING_FACE: process.env.TOKEN_HUGGING_FACE,
@@ -9,4 +14,5 @@ export const envs = {
   MODEL_IMAGE_CLASSIFICATION: process.env.MODEL_IMAGE_CLASSIFICATION,
   PORT: process.env.PORT,
   FRONTEND_BASE_URL: process.env.FRONTEND_BASE_URL,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
 };

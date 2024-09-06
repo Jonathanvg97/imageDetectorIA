@@ -1,6 +1,7 @@
 import { server } from "./server";
 import { envs } from "./config/envs";
 import {
+  authRoutes,
   dogDetectionRoutes,
   huggingFaceRoutes,
   huggingTranslateRoutes,
@@ -10,6 +11,9 @@ import {
 server.use("/api", huggingFaceRoutes);
 server.use("/api", huggingTranslateRoutes);
 server.use("/api", dogDetectionRoutes);
+
+//Ruta de autenticación con Google
+server.use("/auth", authRoutes);
 
 // // Ruta para la raíz del servidor
 server.get("/", (req, res) => {
