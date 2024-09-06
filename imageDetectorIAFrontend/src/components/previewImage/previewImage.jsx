@@ -1,47 +1,19 @@
-import { useState } from "react";
-import { translateText } from "../../server/translateText";
 import { useImageStore } from "../../stores/useImageStore"; // Importa la store
-import { toast } from "react-toastify";
-import { getErrorMessageTranslate } from "../utils/errors/translateError";
+import { useImageIA } from "../../hooks/useImageIA";
 
 // eslint-disable-next-line react/prop-types
 export const PreviewImage = ({ isDogDetection = false }) => {
+    //zustand
     const {
         imageDescription,
         imageURL,
         textTranslated,
-        setTextTranslated,
         originalText,
-        setOriginalText,
+        loading,
     } = useImageStore();
 
-    // LOCAL STATE
-    const [loading, setLoading] = useState(false);
-
-
-    //FUNCTIONS
-    const handleTranslateToSpanish = async () => {
-        try {
-            setLoading(true);
-            if (!textTranslated) {
-                const response = await translateText(imageDescription);
-                setTextTranslated(response); // Guarda la descripción traducida en la store
-                toast.success("Text translated successfully.");
-            }
-            setOriginalText(false);
-
-        } catch (error) {
-            const { status } = error;
-            toast.error(getErrorMessageTranslate(status));
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleTranslateReset = () => {
-        setOriginalText(true);
-    };
-
+    //hook
+    const { handleTranslateToSpanish, handleTranslateReset } = useImageIA();
 
     //UI
     return (

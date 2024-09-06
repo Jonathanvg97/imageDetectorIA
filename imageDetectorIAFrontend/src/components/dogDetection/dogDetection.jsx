@@ -1,48 +1,25 @@
-import { useState } from "react";
-import { dogDetectionImage } from "../../server/dogDetectionImage";
+
 import { useImageStore } from "../../stores/useImageStore";
 import { PreviewImage } from "../previewImage/previewImage"
 import { DogAnimation } from "../utils/dogAnimation";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "../utils/loader/loader";
-import { getErrorMessageImageToText } from "../utils/errors/imageErrorToTextUtils";
-import { toast } from "react-toastify";
+import { useImageIA } from "../../hooks/useImageIA";
+
 export const DogDetection = () => {
-    // LOCAL STATE
-    const [loading, setLoading] = useState(false);
-    const [result, setResult] = useState(false)
     //STORE WITH ZUSTAND
     const {
-        imageURL,
         isDog,
-        setIsDog,
         isDetecting,
-        setIsDetecting,
+        result,
+        loading,
     } = useImageStore();
+
+    const { handleDogDetection } = useImageIA();
 
     const navigate = useNavigate();
 
-    const handleDogDetection = async () => {
-        setLoading(true);
-        try {
-            const response = await dogDetectionImage(imageURL);
-            if (response) {
-                setIsDog(response.isDogPresent);
-                setResult(true);
-            } else {
-                setIsDog(false);
-                setResult(false);
-            }
-            setIsDetecting(true);
-            toast.success("Detection has been successful!");
-        } catch (error) {
-            const { status } = error;
-            toast.error(getErrorMessageImageToText(status));
-            setIsDog(false); // También establece isDog en false si ocurre un error
-        } finally {
-            setLoading(false);
-        }
-    };
+
     return (
         <div className="ImageToConvertForm min-h-screen flex justify-center items-center p-4 relative overflow-hidden">
             <div className="absolute top-4 left-4">

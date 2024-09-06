@@ -12,6 +12,10 @@ export const useImageStore = create(zukeeper(set => ({
     setOriginalText: (originalText) => set({ originalText }),
     isDog: false,
     setIsDog: (isDog) => set({ isDog: isDog }),
+    result: false,
+    setResult: (result) => set({ result: result }),
+    loading: false,
+    setLoading: (loading) => set({ loading: loading }),
     isDetecting: false,
     setIsDetecting: (isDetecting) => set({ isDetecting: isDetecting }),
     reset: () => set({
@@ -20,6 +24,8 @@ export const useImageStore = create(zukeeper(set => ({
         textTranslated: null,
         originalText: false,
         isDog: false,
+        result: false,
+        loading: false,
         isDetecting: false
     }),
 })));

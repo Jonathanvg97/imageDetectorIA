@@ -1,54 +1,30 @@
-import { useState, useEffect } from "react";
-import { convertImageToText } from "../../server/convertImageToText";
+import { useEffect } from "react";
 import { PreviewImage } from "../previewImage/previewImage";
 import { useImageStore } from "../../stores/useImageStore";
 import { DogDetectionImage } from "../dogDetectionImage/dogDetectionImage";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { getErrorMessageImageToText } from "../utils/errors/imageErrorToTextUtils";
+import { useImageIA } from "../../hooks/useImageIA";
 
 export const ImageToConvertForm = () => {
     const navigate = useNavigate();
-    // LOCAL STATE
-    const [loading, setLoading] = useState(false);
     // STORE WITH ZUSTAND
     const {
+        loading,
         imageURL,
-        setImageURL,
         imageDescription,
-        setImageDescription,
-        setOriginalText,
         reset,
-    } = useImageStore(); // Desestructura el estado y el setter de la store
+    } = useImageStore();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    //Hook
+    const { handleURLChange, handleSubmitConvertImageToText } = useImageIA();
 
-        try {
-            setLoading(true);
-            if (!imageDescription) {
-                const data = await convertImageToText(imageURL);
-                setImageDescription(data);
-                setOriginalText(true);
-                toast.success("Image converted to text successfully!");
-            }
-        } catch (error) {
-            const { status } = error;
-            toast.error(getErrorMessageImageToText(status));
-        } finally {
-            setLoading(false);
-        }
-    };
+    //Effect
 
     useEffect(() => {
         if (!imageURL) {
             reset(); // Resetea el estado cuando imageURL está vacío
         }
     }, [imageURL, reset]);
-
-    const handleURLChange = (e) => {
-        setImageURL(e.target.value);
-    };
 
     return (
         <div className="ImageToConvertForm min-h-screen flex justify-center items-center p-4">
@@ -60,7 +36,7 @@ export const ImageToConvertForm = () => {
                     Convert Image to Text
                 </h1>
                 <form
-                    onSubmit={handleSubmit}
+                    onSubmit={handleSubmitConvertImageToText}
                     className="flex flex-col gap-6 pt-4 w-full items-center"
                 >
                     <div className="flex flex-col items-center w-full">
