@@ -26,7 +26,7 @@ export const consumptionLimiter = async (
     });
 
     // Si el cliente ha alcanzado el límite, denegar el acceso
-    if (consumption && consumption.count >= 4) {
+    if (consumption && consumption.count >= 10) {
       return res.status(403).json({
         error:
           "You have exceeded the allowed number of requests. Please log in.",
