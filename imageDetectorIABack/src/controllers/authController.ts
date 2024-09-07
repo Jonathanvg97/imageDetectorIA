@@ -38,6 +38,7 @@ export const googleLogin = async (req: Request, res: Response) => {
         name: user.name || "", // Proporcionar un valor predeterminado si es undefined
         picture: user.picture || "", // Proporcionar un valor predeterminado si es undefined
       },
+      token, // Devolver el token recibido o generado
     });
   } catch (error) {
     console.error("Error during login:", error);

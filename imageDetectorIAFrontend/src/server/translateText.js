@@ -1,11 +1,22 @@
 import api from "./config/api/api";
 import { getErrorMessageTranslate } from "../components/utils/errors/translateError";
+import { getToken } from "../components/utils/getToken";
 
 export const translateText = async (text) => {
   try {
-    const response = await api.post(`/api/translate-text`, {
-      text: text,
-    });
+    const token = getToken();
+
+    const response = await api.post(
+      `/api/translate-text`,
+      {
+        text: text,
+      },
+      {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "", // Añadir el token en la cabecera si existe
+        },
+      }
+    );
     // La respuesta ya está en formato JSON
     return response.data;
   } catch (error) {
