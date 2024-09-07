@@ -24,6 +24,9 @@ export const useAuth = () => {
           `Login successful, welcome to Image Detector IA, ${result.user.name}`
         );
 
+        // Refresca la página
+        window.location.reload();
+
         // Cierra el modal de login
         setCloseModalGoogle(true);
       } else {

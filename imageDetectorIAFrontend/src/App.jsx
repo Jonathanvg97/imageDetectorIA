@@ -5,10 +5,14 @@ import { RoutesConfig } from "./routes";
 
 import { ToastContainer } from "react-toastify";
 import { AuthLogin } from "./components/login/authLogin";
+import { UserProfile } from "./components/userProfile/userProfile";
 
 function App() {
   return (
     <Router>
+      <div className="absolute">
+        <UserProfile />
+      </div>
       <ToastContainer />
       <AuthLogin>
         <RoutesConfig />
