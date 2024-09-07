@@ -21,11 +21,13 @@ export const useAuth = () => {
 
         // Muestra un mensaje de éxito
         toast.success(
-          `Login successful, welcome to Image Detector IA, ${result.user.name}`
+          `Login successful, welcome to Image Detector IA, ${result.user.name}`,
+          {
+            onClose: () => {
+              window.location.reload();
+            },
+          }
         );
-
-        // Refresca la página
-        window.location.reload();
 
         // Cierra el modal de login
         setCloseModalGoogle(true);

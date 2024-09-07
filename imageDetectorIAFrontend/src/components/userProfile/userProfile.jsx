@@ -6,7 +6,7 @@ import { LogoutIcon } from "../../assets/icons/logoutIcon";
 export const UserProfile = () => {
   // Estado local para manejar el perfil del usuario
   const [user, setUser] = useState(null);
-  const [openProfile, setOpenProfile] = useState(true);
+  const [openProfile, setOpenProfile] = useState(false);
 
   // Funciones
   const handleLogout = () => {
@@ -14,7 +14,13 @@ export const UserProfile = () => {
     sessionStorage.removeItem("user"); // Elimina el usuario guardado
     sessionStorage.removeItem("token"); // Elimina el token guardado
     setUser(null); // Limpia el estado del usuario
-    toast.success("Logout successful, thank you for using Image Detector IA."); // Muestra un mensaje de éxito al cerrar sesión
+
+    // Mostrar el mensaje de éxito y recargar la página después
+    toast.success("Logout successful, thank you for using Image Detector IA.", {
+      onClose: () => {
+        window.location.reload();
+      },
+    });
   };
 
   const handleOpenProfile = () => {
