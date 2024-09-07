@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useImageStore } from "../../stores/useImageStore";
-
+import { useLocation } from "react-router-dom";
 export const FloatLogin = () => {
   // Zustand
   const { setCloseModalGoogle } = useImageStore();
@@ -8,21 +8,24 @@ export const FloatLogin = () => {
   // Estado del usuario
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    // Obtener usuario desde localStorage
-    const storedUser = JSON.parse(sessionStorage.getItem("user"));
-    setUser(storedUser);
-  }, []);
+  // Obtener la ubicación actual
+  const location = useLocation();
+  const path = location.pathname;
 
   // Funciones
   const handleCloseModal = () => {
     setCloseModalGoogle(false);
   };
 
+  useEffect(() => {
+    // Obtener usuario desde localStorage
+    const storedUser = JSON.parse(sessionStorage.getItem("user"));
+    setUser(storedUser);
+  }, []);
   // UI
   return (
     <>
-      {!user && (
+      {!user && path !== "/detect-dog" && (
         <div className="FloatLogin p-4">
           <section className="flex items-center justify-center w-16 h-16 mr-2 rounded-full shadow-lg bg-gradient-to-r from-[#F9C97C] to-[#A2E9C1] hover:from-[#C9A9E9] hover:to-[#7EE7FC] hover:cursor-pointer hover:scale-110 transform transition duration-300 ease-in-out">
             <button
