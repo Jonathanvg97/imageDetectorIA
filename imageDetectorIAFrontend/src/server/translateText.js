@@ -1,25 +1,23 @@
+import api from "./config/api/api";
 import { getErrorMessageTranslate } from "../components/utils/errors/translateError";
 
-// Accede a la variable de entorno
-const API_URL = import.meta.env.VITE_API_URL;
-
 export const translateText = async (text) => {
-    try {
-        const response = await fetch(`${API_URL}/api/translate-text`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ text }),
-        });
-        if (!response.ok) {
-            throw { status: response.status, message: getErrorMessageTranslate(response.status) };
-        }
+  try {
+    const response = await api.post(`/api/translate-text`, {
+      text: text,
+    });
+    // La respuesta ya está en formato JSON
+    return response.data;
+  } catch (error) {
+    // Manejo del error
+    const status = error.response?.status;
+    const errorMessage =
+      status === 403
+        ? "Unauthorized access. Please login."
+        : getErrorMessageTranslate(status);
 
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error in translateText:', error);
-        throw error;
-    }
-}
+    console.error("Error in translateText:", errorMessage);
+
+    throw { status, message: errorMessage };
+  }
+};

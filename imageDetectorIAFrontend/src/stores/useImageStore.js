@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import zukeeper from "zukeeper";
 
-export const useImageStore = create(zukeeper(set => ({
-    imageURL: '',
+export const useImageStore = create(
+  zukeeper((set) => ({
+    imageURL: "",
     setImageURL: (imageURL) => set({ imageURL: imageURL }),
-    imageDescription: '',
-    setImageDescription: (description) => set({ imageDescription: description }),
+    imageDescription: "",
+    setImageDescription: (description) =>
+      set({ imageDescription: description }),
     textTranslated: null,
     setTextTranslated: (textTranslated) => set({ textTranslated }),
     originalText: false,
@@ -18,17 +20,20 @@ export const useImageStore = create(zukeeper(set => ({
     setLoading: (loading) => set({ loading: loading }),
     isDetecting: false,
     setIsDetecting: (isDetecting) => set({ isDetecting: isDetecting }),
-    reset: () => set({
-        imageURL: '',
-        imageDescription: '',
+    closeModalGoogle: true,
+    setCloseModalGoogle: (closeModalGoogle) =>
+      set({ closeModalGoogle: closeModalGoogle }),
+    reset: () =>
+      set({
+        imageURL: "",
+        imageDescription: "",
         textTranslated: null,
         originalText: false,
         isDog: false,
         result: false,
         loading: false,
-        isDetecting: false
-    }),
-})));
-
-
-
+        isDetecting: false,
+        closeModalGoogle: true,
+      }),
+  }))
+);
