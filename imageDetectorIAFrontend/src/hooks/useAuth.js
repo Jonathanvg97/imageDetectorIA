@@ -3,10 +3,11 @@ import { useImageStore } from "../stores/useImageStore";
 import { verifyGoogleToken } from "../server/authGoogle";
 export const useAuth = () => {
   //Zustand
-  const { setCloseModalGoogle } = useImageStore();
+  const { setCloseModalGoogle, setLoading } = useImageStore();
 
   //Función para iniciar sesión con Google
   const handleLoginSuccess = async (response) => {
+    setLoading(true);
     try {
       // Verifica el token de Google
       const result = await verifyGoogleToken(response.credential);
@@ -24,6 +25,7 @@ export const useAuth = () => {
           `Login successful, welcome to Image Detector IA, ${result.user.name}`,
           {
             onClose: () => {
+              setLoading(false);
               window.location.reload();
             },
           }
@@ -34,6 +36,7 @@ export const useAuth = () => {
       } else {
         // Maneja el caso en el que la verificación falla
         toast.error("Login failed. Please try again.");
+        setLoading(false);
       }
     } catch (error) {
       // Maneja errores inesperados
