@@ -6,8 +6,11 @@ import { ToastContainer } from "react-toastify";
 import { AuthLogin } from "./components/login/authLogin";
 import { UserProfile } from "./components/userProfile/userProfile";
 import { FloatLogin } from "./components/floatLogin/floatLogin";
+import { useImageStore } from "./stores/useImageStore";
 
 function App() {
+  //zustand
+  const { loadingOAuth } = useImageStore();
   return (
     <Router>
       <div className="absolute">
@@ -15,9 +18,11 @@ function App() {
         <UserProfile />
       </div>
       <ToastContainer />
-      <AuthLogin>
-        <RoutesConfig />
-      </AuthLogin>
+      {!loadingOAuth && (
+        <AuthLogin>
+          <RoutesConfig />
+        </AuthLogin>
+      )}
     </Router>
   );
 }

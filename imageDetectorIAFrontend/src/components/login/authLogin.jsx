@@ -10,7 +10,8 @@ import { LoaderSignUp } from "../utils/loader/loadersLogin/loaderSignUp";
 export const AuthLogin = ({ children }) => {
   // Hooks
   const { handleLoginSuccess } = useAuth();
-  const { closeModalGoogle, setCloseModalGoogle, loading } = useImageStore();
+  const { closeModalGoogle, setCloseModalGoogle, loadingAuth } =
+    useImageStore();
 
   // Functions
   const handleCloseModal = () => {
@@ -20,7 +21,7 @@ export const AuthLogin = ({ children }) => {
   // UI
   return (
     <>
-      {!loading ? (
+      {!loadingAuth ? (
         <div className="authLogin">
           {!closeModalGoogle && (
             <div className="form-container absolute z-50">

@@ -3,7 +3,7 @@ import { useImageStore } from "../../stores/useImageStore";
 import { useLocation } from "react-router-dom";
 export const FloatLogin = () => {
   // Zustand
-  const { setCloseModalGoogle, loading } = useImageStore();
+  const { setCloseModalGoogle, loading, loadingAuth } = useImageStore();
 
   // Estado del usuario
   const [user, setUser] = useState(null);
@@ -25,7 +25,7 @@ export const FloatLogin = () => {
   // UI
   return (
     <>
-      {!user && path !== "/detect-dog" && !loading && (
+      {!user && path !== "/detect-dog" && !loading && !loadingAuth && (
         <div className="FloatLogin p-4 relative z-0">
           <section className="flex items-center justify-center w-16 h-16 mr-2 rounded-full shadow-lg bg-gradient-to-r from-[#F9C97C] to-[#A2E9C1] hover:from-[#C9A9E9] hover:to-[#7EE7FC] hover:cursor-pointer hover:scale-110 transform transition duration-300 ease-in-out ">
             <button
