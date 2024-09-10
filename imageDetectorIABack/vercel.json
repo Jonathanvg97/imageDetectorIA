@@ -9,10 +9,15 @@
       }
     }
   ],
+  "build": {
+    "env": {
+      "DATABASE_URL": "@database_url"
+    }
+  },
   "routes": [
     {
       "src": "/.*",
-      "dest": "dist/app.js"
+      "dest": "src/app.JS"
     }
   ]
 }
