@@ -9,11 +9,6 @@
       }
     }
   ],
-  "build": {
-    "env": {
-      "DATABASE_URL": "@database_url"
-    }
-  },
   "routes": [
     {
       "src": "/.*",
