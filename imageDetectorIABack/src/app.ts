@@ -6,22 +6,29 @@ import {
   huggingFaceRoutes,
   huggingTranslateRoutes,
 } from "./routes";
+import { connectionToDB } from "./config/bd/bd";
 
-// // // Usar las rutas de Hugging Face
-server.use("/api", huggingFaceRoutes);
-server.use("/api", huggingTranslateRoutes);
-server.use("/api", dogDetectionRoutes);
+// Llamar a la función para probar la conexión a la base de datos
+connectionToDB()
+  .then(() => {
+    // Una vez que la conexión esté establecida, inicia el servidor
+    const { PORT } = envs;
 
-//Ruta de autenticación con Google
-server.use("/auth", authRoutes);
+    server.use("/api", huggingFaceRoutes);
+    server.use("/api", huggingTranslateRoutes);
+    server.use("/api", dogDetectionRoutes);
 
-// // Ruta para la raíz del servidor
-server.get("/", (req, res) => {
-  res.send("Hola desde el servidor");
-});
+    server.use("/auth", authRoutes);
 
-const { PORT } = envs;
+    server.get("/", (req, res) => {
+      res.send("Hola desde el servidor");
+    });
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Error al iniciar el servidor:", error);
+    process.exit(1); // Salir del proceso si hay un error
+  });
