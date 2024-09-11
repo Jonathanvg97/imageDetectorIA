@@ -9,8 +9,8 @@
     "dev": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only src/app.ts",
     "migrate:prod": "dotenv -e .env -- npx prisma migrate deploy --schema=./prisma/schema.prisma",
     "migrate-and-seed:prod": "npm run migrate:prod",
-    "build": "tsc && prisma generate && next build",
-    "start": "cross-env NODE_ENV=production node dist/app.js",
+    "build": "tsc",
+    "start": "node dist/app.js",
     "postinstall": "prisma generate"
   },
   "keywords": [
@@ -34,7 +34,7 @@
     "punycode": "^2.3.1",
     "sqlite3": "^5.1.7",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
