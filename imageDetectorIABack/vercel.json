@@ -14,5 +14,10 @@
       "src": "/.*",
       "dest": "/src/app.js"
     }
-  ]
+  ],
+  "build": {
+    "commands": {
+      "build": "prisma generate"
+    }
+  }
 }
