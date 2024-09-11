@@ -11,7 +11,7 @@
     "migrate-and-seed:prod": "npm run migrate:prod",
     "build": "tsc  && npm run",
     "start": "node dist/app.js",
-    "postinstall": "migrate-and-seed:prod && npx prisma generate"
+    "postinstall": "prisma generate"
   },
   "keywords": [
     "image",
