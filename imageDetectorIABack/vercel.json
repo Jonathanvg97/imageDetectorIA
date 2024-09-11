@@ -5,19 +5,14 @@
       "src": "src/app.ts",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["prisma/**"]
+        "includeFiles": ["prisma/**", "node_modules/.prisma/**"]
       }
     }
   ],
   "routes": [
     {
       "src": "/.*",
-      "dest": "/src/app.js"
+      "dest": "src/app.js"
     }
-  ],
-  "build": {
-    "commands": {
-      "build": "prisma generate"
-    }
-  }
+  ]
 }
