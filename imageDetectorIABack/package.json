@@ -9,9 +9,9 @@
     "dev": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only src/app.ts",
     "migrate:prod": "dotenv -e .env -- npx prisma migrate deploy --schema=./prisma/schema.prisma",
     "migrate-and-seed:prod": "npm run migrate:prod",
-    "build": "tsc && npm run",
+    "build": "tsc  && npm run",
     "start": "node dist/app.js",
-    "postinstall": "prisma generate"
+    "postinstall": "migrate-and-seed:prod && npx prisma generate"
   },
   "keywords": [
     "image",
