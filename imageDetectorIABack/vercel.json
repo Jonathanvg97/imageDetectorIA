@@ -2,13 +2,17 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/app.ts",
-      "use": "@vercel/node"
+      "src": "src/app.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["prisma/schema.prisma", "prisma/migrations/**/*"]
+      }
     }
   ],
-  "build": {
-    "env": {
-      "DATABASE_URL": "@database_url"
+  "routes": [
+    {
+      "src": "/.*",
+      "dest": "src/app.js"
     }
-  }
+  ]
 }
