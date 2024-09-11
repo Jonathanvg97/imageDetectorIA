@@ -1,9 +1,7 @@
 // src/controllers/authController.ts
 import { Request, Response } from "express";
 import { verifyGoogleToken } from "../services/authService";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import pool from "../config/bd/bd";
 
 export const googleLogin = async (req: Request, res: Response) => {
   const { token } = req.body;
@@ -16,19 +14,22 @@ export const googleLogin = async (req: Request, res: Response) => {
 
   try {
     // Verifica si el usuario ya existe
-    let user = await prisma.user.findUnique({
-      where: { email: payload.email },
-    });
+    const {
+      rows: [existingUser],
+    } = await pool.query("SELECT * FROM users WHERE email = $1", [
+      payload.email,
+    ]);
+
+    let user = existingUser; // Cambiar a `let` para permitir la reasignación
 
     if (!user) {
       // Si el usuario no existe, créalo
-      user = await prisma.user.create({
-        data: {
-          email: payload.email,
-          name: payload.name || "", // Proporcionar un valor predeterminado si es undefined
-          picture: payload.picture || "", // Proporcionar un valor predeterminado si es undefined
-        },
-      });
+      const result = await pool.query(
+        "INSERT INTO users (email, name, picture) VALUES ($1, $2, $3) RETURNING *",
+        [payload.email, payload.name || "", payload.picture || ""]
+      );
+
+      user = result.rows[0];
     }
 
     return res.status(200).json({
@@ -43,7 +44,5 @@ export const googleLogin = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error during login:", error);
     return res.status(500).json({ error: "Internal Server Error" });
-  } finally {
-    await prisma.$disconnect();
   }
 };

@@ -1,13 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+// db.ts
+import { Pool } from "pg";
+import { envs } from "../envs";
 
-const prisma = new PrismaClient();
+const pool = new Pool({
+  connectionString: envs.DATABASE_URL,
+  ssl: false,
+});
 
-export async function connectionToDB() {
-  try {
-    console.log("Conectado a la base de datos exitosamente.");
-  } catch (e) {
-    console.error("Error connecting to the database:", e);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
+export default pool;

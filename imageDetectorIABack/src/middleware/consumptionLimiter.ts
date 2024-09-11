@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { PrismaClient } from "@prisma/client";
+import pool from "../config/bd/bd";
 import { getClientIp } from "../utils/clientIp";
-
-const prisma = new PrismaClient();
 
 export const consumptionLimiter = async (
   req: Request,
@@ -20,14 +18,17 @@ export const consumptionLimiter = async (
     const normalizedIp = clientIp === "::1" ? "127.0.0.1" : clientIp;
 
     // Verificar si ya existe un registro de consumo para la IP
-    const consumption = await prisma.consumption.findUnique({
-      where: { clientIp: normalizedIp },
-    });
+    const result = await pool.query(
+      "SELECT * FROM consumption WHERE clientIp = $1",
+      [normalizedIp]
+    );
+    const consumption = result.rows[0];
 
     if (!consumption) {
-      await prisma.consumption.create({
-        data: { clientIp: normalizedIp, count: 1 },
-      });
+      await pool.query(
+        "INSERT INTO consumption (clientIp, count) VALUES ($1, $2)",
+        [normalizedIp, 1]
+      );
       return next(); // Continuar si es la primera petición
     }
 
@@ -35,12 +36,11 @@ export const consumptionLimiter = async (
     req.isConsumptionLimitReached = consumption.count >= 4;
 
     // Actualizar el conteo de peticiones
-    // Si el límite no ha sido alcanzado, actualizar el conteo de peticiones
     if (!req.isConsumptionLimitReached) {
-      await prisma.consumption.update({
-        where: { clientIp: normalizedIp },
-        data: { count: consumption.count + 1 },
-      });
+      await pool.query(
+        "UPDATE consumption SET count = count + 1 WHERE clientIp = $1",
+        [normalizedIp]
+      );
     }
 
     next();
