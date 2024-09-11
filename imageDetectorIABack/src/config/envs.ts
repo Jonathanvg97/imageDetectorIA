@@ -15,4 +15,5 @@ export const envs = {
   PORT: process.env.PORT,
   FRONTEND_BASE_URL: process.env.FRONTEND_BASE_URL,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  DATABASE_URL: process.env.DATABASE_URL,
 };
