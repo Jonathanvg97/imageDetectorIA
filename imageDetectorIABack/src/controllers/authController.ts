@@ -1,48 +1,33 @@
 // src/controllers/authController.ts
 import { Request, Response } from "express";
-import { verifyGoogleToken } from "../services/authService";
-import pool from "../config/bd/bd";
+import { authenticateUser } from "../services/authService";
+import { AuthLoginInterface } from "../types/authLoginInterface";
 
-export const googleLogin = async (req: Request, res: Response) => {
-  const { token } = req.body;
-
-  const payload = await verifyGoogleToken(token);
-
-  if (!payload) {
-    return res.status(401).json({ error: "Invalid Google token" });
-  }
-
+export const userLogin = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   try {
-    // Verifica si el usuario ya existe
-    const {
-      rows: [existingUser],
-    } = await pool.query("SELECT * FROM users WHERE email = $1", [
-      payload.email,
-    ]);
+    const { email, password }: AuthLoginInterface = req.body;
 
-    let user = existingUser; // Cambiar a `let` para permitir la reasignación
-
-    if (!user) {
-      // Si el usuario no existe, créalo
-      const result = await pool.query(
-        "INSERT INTO users (email, name, picture) VALUES ($1, $2, $3) RETURNING *",
-        [payload.email, payload.name || "", payload.picture || ""]
-      );
-
-      user = result.rows[0];
+    // Verifica que los datos requeridos estén presentes
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
-    return res.status(200).json({
-      message: "Login successful",
-      user: {
-        email: user.email,
-        name: user.name || "", // Proporcionar un valor predeterminado si es undefined
-        picture: user.picture || "", // Proporcionar un valor predeterminado si es undefined
-      },
-      token, // Devolver el token recibido o generado
-    });
+    // Autenticar al usuario
+    const { user, token } = await authenticateUser({ email, password });
+
+    // Devuelve una respuesta con el usuario autenticado
+    return res.status(200).json({ user, token });
   } catch (error) {
-    console.error("Error during login:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    console.error("Login error:", error);
+
+    // Manejo de errores específicos de autenticación
+    return res.status(401).json({
+      message: "Credentials invalid", // Mensaje específico para errores de autenticación
+    });
   }
 };

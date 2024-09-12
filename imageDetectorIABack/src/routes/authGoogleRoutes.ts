@@ -1,6 +1,6 @@
 // src/routes/authRoutes.ts
 import { Router } from "express";
-import { googleLogin } from "../controllers/authController";
+import { googleLogin } from "../controllers/authGoogleController";
 
 const router = Router();
 

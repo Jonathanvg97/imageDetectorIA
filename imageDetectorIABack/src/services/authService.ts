@@ -1,30 +1,53 @@
 // src/services/authService.ts
-import { OAuth2Client } from "google-auth-library";
-import { envs } from "../config/envs";
+import bcrypt from "bcrypt";
 import { User } from "../types/user.types";
+import pool from "../config/bd/bd";
+import { AuthLoginInterface } from "../types/authLoginInterface";
+import jwt from "jsonwebtoken";
+import { envs } from "../config/envs";
 
-const client = new OAuth2Client(envs.GOOGLE_CLIENT_ID);
-
-export const verifyGoogleToken = async (
-  token: string
-): Promise<User | null> => {
+export const authenticateUser = async (
+  authLoginData: AuthLoginInterface
+): Promise<{ user: User; token: string }> => {
   try {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: envs.GOOGLE_CLIENT_ID, // Especifica el ID de cliente de Google
-    });
-    const payload = ticket.getPayload();
-    if (!payload) {
-      return null;
+    // Buscar el usuario en la base de datos
+    const query = `
+      SELECT email, password, name, picture 
+      FROM users 
+      WHERE email = $1
+    `;
+    const { rows } = await pool.query(query, [authLoginData.email]);
+
+    if (rows.length === 0) {
+      throw new Error("Invalid email or password");
     }
+
+    const user = rows[0];
+
+    // Verificar la contraseña
+    const isPasswordValid = await bcrypt.compare(
+      authLoginData.password,
+      user.password
+    );
+
+    if (!isPasswordValid) {
+      throw new Error("Invalid email or password");
+    }
+
+    // Generar el token JWT
+    const token = jwt.sign(
+      { email: user.email, name: user.name, picture: user.picture }, // Payload del token
+      envs.JWT_SECRET, // Clave secreta para firmar el token
+      { expiresIn: envs.JWT_EXPIRATION } // Opciones del token
+    );
+
+    // Si las credenciales son correctas, retornar el usuario con todos los campos necesarios
     return {
-      id: 0,
-      email: payload.email || "",
-      name: payload.name || "",
-      picture: payload.picture || "",
+      user: { email: user.email, name: user.name, picture: user.picture },
+      token,
     };
   } catch (error) {
-    console.error("Error verifying Google token", error);
-    return null;
+    console.error("Authentication error:", error);
+    throw error;
   }
 };

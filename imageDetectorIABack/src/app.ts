@@ -6,6 +6,7 @@ import {
   dogDetectionRoutes,
   huggingFaceRoutes,
   huggingTranslateRoutes,
+  userRoutes,
 } from "./routes";
 import pool from "./config/bd/bd";
 
@@ -30,7 +31,7 @@ checkDatabaseConnection()
     server.use("/api", huggingFaceRoutes);
     server.use("/api", huggingTranslateRoutes);
     server.use("/api", dogDetectionRoutes);
-
+    server.use("/api", userRoutes);
     server.use("/auth", authRoutes);
 
     server.get("/", (req, res) => {

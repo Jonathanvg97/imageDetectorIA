@@ -23,7 +23,8 @@ const initDb = async () => {
         id SERIAL PRIMARY KEY,
         email TEXT NOT NULL UNIQUE,
         name TEXT,
-        picture TEXT
+        picture TEXT,
+        password TEXT
       );
     `);
 
