@@ -20,7 +20,7 @@ const initDb = async () => {
     // Crear tabla users si no existe
     await client.query(`
       CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
+        id UUID PRIMARY KEY ,
         email TEXT NOT NULL UNIQUE,
         name TEXT,
         picture TEXT,
