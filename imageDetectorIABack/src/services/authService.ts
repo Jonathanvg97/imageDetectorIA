@@ -36,14 +36,23 @@ export const authenticateUser = async (
 
     // Generar el token JWT
     const token = jwt.sign(
-      { email: user.email, name: user.name, picture: user.picture }, // Payload del token
+      {
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
+      }, // Payload del token
       envs.JWT_SECRET, // Clave secreta para firmar el token
       { expiresIn: envs.JWT_EXPIRATION } // Opciones del token
     );
 
     // Si las credenciales son correctas, retornar el usuario con todos los campos necesarios
     return {
-      user: { email: user.email, name: user.name, picture: user.picture },
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
+      },
       token,
     };
   } catch (error) {
