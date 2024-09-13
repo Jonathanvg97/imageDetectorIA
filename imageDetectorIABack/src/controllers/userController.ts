@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
-import { createUser } from "../services/userService";
+import { createUser, deleteUser } from "../services/userService";
 import { User } from "../types/user.types";
 import { emailRegex, passwordRegex } from "../utils/regex";
+import { uuidRegex } from "../utils/regex/idValidate";
+import { debug } from "console";
 
 /**
  * Creates a new user in the database based on the data provided in the request body.
@@ -50,5 +52,40 @@ export async function userCreate(
       message: "Internal Server Error",
       error: "An unexpected error occurred",
     });
+  }
+}
+
+/**
+ * Controller function to handle user delete.
+ *
+ * @param {Request} req - The request object containing user ID in params.
+ * @param {Response} res - The response object to send the result back to the client.
+ * @return {Promise<Response>} A promise that resolves to the response object.
+ */
+
+export async function userDelete(
+  req: Request,
+  res: Response
+): Promise<Response> {
+  try {
+    const { userId } = req.params;
+    // Validar el formato del ID
+    if (!uuidRegex.test(userId)) {
+      return res.status(400).json({ message: "Invalid ID format" });
+    }
+
+    // Elimina el usuario llamando a deleteUser
+    const result = await deleteUser(userId);
+
+    // Verifica si el usuario fue eliminado (si se afectó alguna fila)
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Devuelve un mensaje de éxito
+    return res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 }
