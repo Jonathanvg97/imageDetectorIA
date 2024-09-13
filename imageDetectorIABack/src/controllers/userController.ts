@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
-import { createUser, deleteUser } from "../services/userService";
+import { createUser, deleteUser, updateUser } from "../services/userService";
 import { User } from "../types/user.types";
 import { emailRegex, passwordRegex } from "../utils/regex";
 import { uuidRegex } from "../utils/regex/idValidate";
 import { debug } from "console";
+import { UserUpdate } from "../types/updateUserInterface";
 
 /**
  * Creates a new user in the database based on the data provided in the request body.
@@ -74,6 +75,11 @@ export async function userDelete(
       return res.status(400).json({ message: "Invalid ID format" });
     }
 
+    // Verificar si se proporciona un ID en los parámetros
+    if (!userId) {
+      return res.status(400).json({ message: "ID is required" });
+    }
+
     // Elimina el usuario llamando a deleteUser
     const result = await deleteUser(userId);
 
@@ -86,6 +92,47 @@ export async function userDelete(
     return res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
     console.error("Error deleting user:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+export async function userUpdate(
+  req: Request,
+  res: Response
+): Promise<Response> {
+  try {
+    const { userId } = req.params;
+    const { name, picture } = req.body;
+
+    // Verificar si se proporciona un ID en los parámetros
+    if (!userId) {
+      return res.status(400).json({ message: "ID is required" });
+    }
+
+    // Crear el objeto de actualización solo con los campos proporcionados
+    const updateFields: UserUpdate = {};
+    if (name) updateFields.name = name;
+    if (picture) updateFields.picture = picture;
+
+    // Verificar que al menos un campo de actualización esté presente
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({
+        message: "At least one field (name or picture) is required for update",
+      });
+    }
+
+    // Actualiza el usuario llamando a updateUser
+    const result = await updateUser(userId, updateFields);
+
+    // Verifica si el usuario fue actualizado (si se afectó alguna fila)
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Devuelve un mensaje de éxito
+    return res.status(200).json({ message: "User updated successfully" });
+  } catch (error) {
+    console.error("Error updating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
