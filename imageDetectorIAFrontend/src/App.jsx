@@ -8,10 +8,11 @@ import { UserProfile } from "./components/userProfile/userProfile";
 import { FloatLogin } from "./components/floatLogin/floatLogin";
 import { useImageStore } from "./stores/useImageStore";
 import { Footer } from "./components/footer/footer";
+import { UserCreateForm } from "./components/userCreateForm/userCreateForm";
 
 function App() {
   //zustand
-  const { loadingOAuth } = useImageStore();
+  const { loadingOAuth, modalUserLogin } = useImageStore();
   return (
     <Router>
       <div className="absolute">
@@ -19,11 +20,13 @@ function App() {
         <UserProfile />
       </div>
       <ToastContainer />
-      {!loadingOAuth && (
+      {!loadingOAuth && modalUserLogin ? (
         <AuthLogin>
           <RoutesConfig />
           <Footer />
         </AuthLogin>
+      ) : (
+        <UserCreateForm />
       )}
     </Router>
   );

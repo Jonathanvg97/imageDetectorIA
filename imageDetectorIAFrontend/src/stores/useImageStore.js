@@ -27,6 +27,10 @@ export const useImageStore = create(
     closeModalGoogle: true,
     setCloseModalGoogle: (closeModalGoogle) =>
       set({ closeModalGoogle: closeModalGoogle }),
+    modalUserCreate: false,
+    setModalUserCreate: (modalUserCreate) => set({ modalUserCreate }),
+    modalUserLogin: true,
+    setModalUserLogin: (modalUserLogin) => set({ modalUserLogin }),
     reset: () =>
       set({
         imageURL: "",
@@ -40,6 +44,8 @@ export const useImageStore = create(
         loadingOAuth: false,
         isDetecting: false,
         closeModalGoogle: true,
+        modalUserCreate: false,
+        modalUserLogin: true,
       }),
   }))
 );
