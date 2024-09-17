@@ -10,6 +10,7 @@ export const useAuth = () => {
     setLoadingAuth,
     setModalUserCreate,
     setModalUserLogin,
+    setUser,
   } = useImageStore();
 
   //Función para iniciar sesión con Google
@@ -21,6 +22,7 @@ export const useAuth = () => {
 
       // Verifica el contenido de result
       if (result && result.user && result.user.name) {
+        setUser(result.user);
         // Guarda los datos del usuario en sessionStorage
         sessionStorage.setItem("user", JSON.stringify(result.user));
 
@@ -31,10 +33,8 @@ export const useAuth = () => {
         toast.success(
           `Login successful, welcome to Image Detector IA, ${result.user.name}`
         );
-        setTimeout(() => {
-          setLoadingAuth(false);
-          window.location.reload();
-        }, 4000);
+
+        setLoadingAuth(false);
 
         // Cierra el modal de login
         setCloseModalGoogle(true);
@@ -77,10 +77,10 @@ export const useAuth = () => {
           `Login successful, welcome to Image Detector IA, ${result.user.name}`
         );
 
-        // Recarga la página después de 4 segundos
-        setTimeout(() => {
-          window.location.reload();
-        }, 4000);
+        // // Recarga la página después de 4 segundos
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 1000);
       } else {
         // Si la autenticación falla
         toast.error("Login failed. Please try again.");
@@ -111,12 +111,12 @@ export const useAuth = () => {
     toast.error("Login Failed, please try again");
   };
 
-  //Function to create user
+  // Function to create user
   const handleUserCreate = async ({ email, name, picture, password }) => {
     try {
       // Verifica que los datos requeridos estén presentes
       if (!name || !email || !password) {
-        toast.error("Name, email and password are required");
+        toast.error("Name, email, and password are required");
         return;
       }
 
@@ -125,20 +125,34 @@ export const useAuth = () => {
 
       // Verifica el contenido de result
       if (result) {
-        // Muestra un mensaje de éxito
+        // Muestra un mensaje de éxito
         toast.success("User created successfully");
       } else {
         // Si la creación falla
         toast.error("User creation failed. Please try again.");
       }
     } catch (error) {
-      // Maneja errores inesperados
-      console.error("Error in userCreate:", error);
-      toast.error("An error occurred during user creation. Please try again.");
+      // Maneja errores inesperados y errores específicos
+      console.error("Error in userCreate:", error.message);
+
+      if (error.message.includes("Email is already registered")) {
+        toast.error(
+          "The email is already registered. Please use a different email."
+        );
+      } else if (error.message.includes("Invalid email format")) {
+        toast.error("The email format is invalid. Please check and try again.");
+      } else if (error.message.includes("Password must be at least")) {
+        toast.error(
+          "The password does not meet the required criteria. Please check and try again."
+        );
+      } else {
+        toast.error(
+          "An error occurred during user creation. Please try again."
+        );
+      }
     }
   };
 
-  // }
   return {
     handleLoginSuccessWithGoogle,
     handleLoginError,

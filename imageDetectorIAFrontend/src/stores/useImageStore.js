@@ -5,6 +5,11 @@ export const useImageStore = create(
   zukeeper((set) => ({
     imageURL: "",
     setImageURL: (imageURL) => set({ imageURL: imageURL }),
+    user: JSON.parse(sessionStorage.getItem("user")) || null,
+    setUser: (user) => {
+      sessionStorage.setItem("user", JSON.stringify(user));
+      set({ user });
+    },
     imageDescription: "",
     setImageDescription: (description) =>
       set({ imageDescription: description }),
@@ -19,7 +24,7 @@ export const useImageStore = create(
     loading: false,
     setLoading: (loading) => set({ loading: loading }),
     loadingAuth: false,
-    setLoadingAuth: (loadingAuth) => set({ loadingAuth: loadingAuth }),
+    setLoadingAuth: (loading) => set({ loadingAuth: loading }),
     loadingOAuth: false,
     setLoadingOAuth: (loadingOAuth) => set({ loadingOAuth: loadingOAuth }),
     isDetecting: false,

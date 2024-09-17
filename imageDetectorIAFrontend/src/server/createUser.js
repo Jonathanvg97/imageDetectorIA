@@ -15,11 +15,13 @@ export const createUser = async ({ email, name, picture, password }) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.error("Server Error:", error.response.data);
-      throw new Error(
+      // Manejo de errores del servidor
+      const errorMessage =
         error.response.data?.message ||
-          "Failed to create user. Please try again."
-      );
+        "Failed to create user. Please try again.";
+
+      // Lanza un error con el mensaje específico
+      throw new Error(errorMessage);
     } else if (error.request) {
       // El servidor no respondió
       console.error("No response from server:", error.request);

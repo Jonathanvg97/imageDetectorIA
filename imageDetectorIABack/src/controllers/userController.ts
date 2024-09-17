@@ -3,7 +3,6 @@ import { createUser, deleteUser, updateUser } from "../services/userService";
 import { User } from "../types/user.types";
 import { emailRegex, passwordRegex } from "../utils/regex";
 import { uuidRegex } from "../utils/regex/idValidate";
-import { debug } from "console";
 import { UserUpdate } from "../types/updateUserInterface";
 
 /**

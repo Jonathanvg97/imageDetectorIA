@@ -17,6 +17,7 @@ export const UserCreateForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -32,11 +33,21 @@ export const UserCreateForm = () => {
   const handleAddPhoto = () => {
     setAddPhoto(!addPhoto);
   };
-  const onSubmitFormCreateUser = (data) => {
-    console.log(data);
+  const onSubmitFormCreateUser = async (data) => {
     const { email, password, username, userPhoto } = data;
-    console.log(data);
-    handleUserCreate({ email, name: username, password, userPhoto });
+
+    try {
+      // Handle user creation and wait for the response
+      await handleUserCreate({ email, name: username, password, userPhoto });
+
+      // Reset the form fields
+      reset();
+
+      // Close the modal or form
+      handleCloseModalCreateAccount();
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
   };
 
   // UI

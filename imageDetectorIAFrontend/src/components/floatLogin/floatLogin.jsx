@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
 import { useImageStore } from "../../stores/useImageStore";
 import { useLocation } from "react-router-dom";
 export const FloatLogin = () => {
   // Zustand
-  const { setCloseModalGoogle, loading, loadingAuth } = useImageStore();
-
-  // Estado del usuario
-  const [user, setUser] = useState(null);
+  const { setCloseModalGoogle, loading, loadingAuth, user } = useImageStore();
 
   // Obtener la ubicación actual
   const location = useLocation();
@@ -17,11 +13,6 @@ export const FloatLogin = () => {
     setCloseModalGoogle(false);
   };
 
-  useEffect(() => {
-    // Obtener usuario desde localStorage
-    const storedUser = JSON.parse(sessionStorage.getItem("user"));
-    setUser(storedUser);
-  }, []);
   // UI
   return (
     <>

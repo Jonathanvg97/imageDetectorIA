@@ -1,5 +1,5 @@
 import { googleLogout } from "@react-oauth/google";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { LogoutIcon } from "../../assets/icons/logoutIcon";
 import { LoaderSignUp } from "../utils/loader/loadersLogin/loaderSignUp";
@@ -8,9 +8,8 @@ import { useLocation } from "react-router-dom";
 
 export const UserProfile = () => {
   //Zustand
-  const { loadingOAuth, setLoadingOAuth } = useImageStore();
+  const { loadingOAuth, setLoadingOAuth, user, setUser } = useImageStore();
   // Estado local para manejar el perfil del usuario
-  const [user, setUser] = useState(null);
   const [openProfile, setOpenProfile] = useState(false);
 
   // Funciones
@@ -21,17 +20,15 @@ export const UserProfile = () => {
       sessionStorage.removeItem("user"); // Elimina el usuario guardado
       sessionStorage.removeItem("token"); // Elimina el token guardado
       setUser(null); // Limpia el estado del usuario
-
       // Mostrar el mensaje de éxito y recargar la página después
       toast.success(
         "Logout successful, thank you for using Image Detector IA."
       );
-      setTimeout(() => {
-        setLoadingOAuth(false);
-        window.location.reload();
-      }, 4000);
+      setLoadingOAuth(false);
     } catch (error) {
       toast.error(error);
+    } finally {
+      setLoadingOAuth(false);
     }
   };
 
@@ -42,14 +39,6 @@ export const UserProfile = () => {
   const handleOpenProfile = () => {
     setOpenProfile(!openProfile);
   };
-
-  // Efecto para cargar el usuario desde sessionStorage cuando el componente se monta
-  useEffect(() => {
-    const storedUser = JSON.parse(sessionStorage.getItem("user"));
-    if (storedUser) {
-      setUser(storedUser);
-    }
-  }, []);
 
   // UI
   return (
