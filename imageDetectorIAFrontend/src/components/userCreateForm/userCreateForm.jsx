@@ -5,6 +5,7 @@ import { CloseIcon } from "../../assets/icons";
 import { useImageStore } from "../../stores/useImageStore";
 import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
+import { Footer } from "../footer/footer";
 
 export const UserCreateForm = () => {
   // Hooks
@@ -36,17 +37,16 @@ export const UserCreateForm = () => {
   const onSubmitFormCreateUser = async (data) => {
     const { email, password, username, userPhoto } = data;
 
-    try {
-      // Handle user creation and wait for the response
-      await handleUserCreate({ email, name: username, password, userPhoto });
+    // Handle user creation and wait for the response
+    const result = await handleUserCreate({
+      email,
+      name: username,
+      password,
+      userPhoto,
+    });
 
-      // Reset the form fields
+    if (result) {
       reset();
-
-      // Close the modal or form
-      handleCloseModalCreateAccount();
-    } catch (error) {
-      console.error("Error creating user:", error);
     }
   };
 
@@ -203,6 +203,7 @@ export const UserCreateForm = () => {
               <button className="sign">Create account</button>
             </form>
           </div>
+          <Footer />
         </div>
       )}
     </>

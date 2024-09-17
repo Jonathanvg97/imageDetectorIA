@@ -68,6 +68,7 @@ export const useAuth = () => {
 
       // Verifica el contenido de result
       if (result?.user?.name) {
+        setUser(result.user);
         // Guarda los datos del usuario y el token en sessionStorage
         sessionStorage.setItem("user", JSON.stringify(result.user));
         sessionStorage.setItem("token", result.token);
@@ -77,13 +78,11 @@ export const useAuth = () => {
           `Login successful, welcome to Image Detector IA, ${result.user.name}`
         );
 
-        // // Recarga la página después de 4 segundos
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 1000);
+        setLoadingAuth(false);
       } else {
         // Si la autenticación falla
         toast.error("Login failed. Please try again.");
+        setLoadingAuth(false);
       }
     } catch (error) {
       // Maneja errores inesperados
@@ -113,26 +112,23 @@ export const useAuth = () => {
 
   // Function to create user
   const handleUserCreate = async ({ email, name, picture, password }) => {
+    setLoadingAuth(true);
     try {
-      // Verifica que los datos requeridos estén presentes
       if (!name || !email || !password) {
         toast.error("Name, email, and password are required");
         return;
       }
 
-      // Crea el usuario
       const result = await createUser({ email, name, picture, password });
 
-      // Verifica el contenido de result
       if (result) {
-        // Muestra un mensaje de éxito
         toast.success("User created successfully");
+        handleCloseModalCreateAccount();
+        setModalUserLogin(true);
       } else {
-        // Si la creación falla
         toast.error("User creation failed. Please try again.");
       }
     } catch (error) {
-      // Maneja errores inesperados y errores específicos
       console.error("Error in userCreate:", error.message);
 
       if (error.message.includes("Email is already registered")) {
@@ -150,6 +146,8 @@ export const useAuth = () => {
           "An error occurred during user creation. Please try again."
         );
       }
+    } finally {
+      setLoadingAuth(false);
     }
   };
 
