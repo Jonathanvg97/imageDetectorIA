@@ -9,16 +9,19 @@ import { FloatLogin } from "./components/floatLogin/floatLogin";
 import { useImageStore } from "./stores/useImageStore";
 import { Footer } from "./components/footer/footer";
 import { UserCreateForm } from "./components/userCreateForm/userCreateForm";
+import { SettingsProfile } from "./components/settingsProfile/settingsProfile";
 
 function App() {
   //zustand
-  const { loadingOAuth, modalUserLogin } = useImageStore();
+  const { loadingOAuth, modalUserLogin, user } = useImageStore();
   return (
     <Router>
       <div className="absolute">
         <FloatLogin />
         <UserProfile />
       </div>
+      {user && <SettingsProfile />}
+
       <ToastContainer />
       {!loadingOAuth && modalUserLogin ? (
         <AuthLogin>

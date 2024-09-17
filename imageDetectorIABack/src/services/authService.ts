@@ -12,7 +12,7 @@ export const authenticateUser = async (
   try {
     // Buscar el usuario en la base de datos
     const query = `
-      SELECT email, password, name, picture 
+      SELECT id, email, password, name, picture 
       FROM users 
       WHERE email = $1
     `;
@@ -37,6 +37,7 @@ export const authenticateUser = async (
     // Generar el token JWT
     const token = jwt.sign(
       {
+        id: user.id,
         email: user.email,
         name: user.name,
         picture: user.picture,

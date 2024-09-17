@@ -3,6 +3,7 @@ import { useImageStore } from "../stores/useImageStore";
 import { verifyGoogleToken } from "../server/authGoogle";
 import { authUser } from "../server/authUser";
 import { createUser } from "../server/createUser";
+import { deleteUser } from "../server/deleteUser";
 export const useAuth = () => {
   //Zustand
   const {
@@ -151,6 +152,29 @@ export const useAuth = () => {
     }
   };
 
+  //Function to delete user
+  const handleDeleteUser = async () => {
+    // setLoadingAuth(true);
+    try {
+      // Obtener el usuario almacenado en sessionStorage y parsearlo
+      const storedUser = JSON.parse(sessionStorage.getItem("user"));
+
+      // Verificar que el usuario existe y que el campo id está presente
+      if (storedUser && storedUser.id) {
+        await deleteUser(storedUser.id);
+        toast.success(`User ${storedUser.name} deleted successfully`);
+        setUser(null);
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("token");
+      } else {
+        throw new Error("User ID not found");
+      }
+    } catch (error) {
+      console.error("Error in deleteUser:", error.message);
+      toast.error("An error occurred during user deletion. Please try again.");
+    }
+  };
+
   return {
     handleLoginSuccessWithGoogle,
     handleLoginError,
@@ -158,5 +182,6 @@ export const useAuth = () => {
     handleOpenModalCreateAccount,
     handleCloseModalCreateAccount,
     handleUserCreate,
+    handleDeleteUser,
   };
 };
