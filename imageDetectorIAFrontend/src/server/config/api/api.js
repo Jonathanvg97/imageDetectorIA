@@ -13,7 +13,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 403) {
       // Actualizar el estado global para mostrar el modal
-      useImageStore.getState().setCloseModalGoogle(false); // Abre el modal si el estado es cerrar
+      useImageStore.getState().setModalUserLogin(true); // Abre el modal si el estado es cerrar
     }
     return Promise.reject(error);
   }

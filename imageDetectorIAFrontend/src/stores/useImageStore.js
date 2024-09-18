@@ -29,12 +29,11 @@ export const useImageStore = create(
     setLoadingOAuth: (loadingOAuth) => set({ loadingOAuth: loadingOAuth }),
     isDetecting: false,
     setIsDetecting: (isDetecting) => set({ isDetecting: isDetecting }),
-    closeModalGoogle: true,
-    setCloseModalGoogle: (closeModalGoogle) =>
-      set({ closeModalGoogle: closeModalGoogle }),
     modalUserCreate: false,
     setModalUserCreate: (modalUserCreate) => set({ modalUserCreate }),
-    modalUserLogin: true,
+    editionMode: false,
+    setEditionMode: (editionMode) => set({ editionMode }),
+    modalUserLogin: false,
     setModalUserLogin: (modalUserLogin) => set({ modalUserLogin }),
     reset: () =>
       set({
@@ -48,9 +47,9 @@ export const useImageStore = create(
         loadingAuth: false,
         loadingOAuth: false,
         isDetecting: false,
-        closeModalGoogle: true,
         modalUserCreate: false,
-        modalUserLogin: true,
+        modalUserLogin: false,
+        editionMode: false,
       }),
   }))
 );

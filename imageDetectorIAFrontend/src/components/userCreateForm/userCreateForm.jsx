@@ -9,11 +9,15 @@ import { Footer } from "../footer/footer";
 
 export const UserCreateForm = () => {
   // Hooks
-  const { handleCloseModalCreateAccount, handleUserCreate } = useAuth();
-  const { modalUserCreate, modalUserLogin } = useImageStore();
+  const { handleCloseModalCreateAccount, handleUserCreate, handleUpdateUser } =
+    useAuth();
+  const { modalUserCreate, editionMode } = useImageStore();
 
-  const [addPhoto, setAddPhoto] = useState(false);
+  // Get edition data if in edit mode
+  const editionDataString = editionMode ? sessionStorage.getItem("user") : null;
+  const editionData = editionDataString ? JSON.parse(editionDataString) : {};
 
+  const [addPhoto, setAddPhoto] = useState(editionData?.picture ? true : false);
   // React Hook Form
   const {
     register,
@@ -22,11 +26,11 @@ export const UserCreateForm = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "",
+      email: editionMode ? editionData.email || "" : "",
       password: "",
-      username: "",
-      photofile: false,
-      userPhoto: "",
+      username: editionMode ? editionData.name || "" : "",
+      photofile: editionMode && editionData.picture ? true : false,
+      userPhoto: editionMode ? editionData.picture || "" : "",
     },
   });
 
@@ -34,26 +38,43 @@ export const UserCreateForm = () => {
   const handleAddPhoto = () => {
     setAddPhoto(!addPhoto);
   };
-  const onSubmitFormCreateUser = async (data) => {
+  const onSubmitFormUser = async (data) => {
     const { email, password, username, userPhoto } = data;
+    let result;
 
-    // Handle user creation and wait for the response
-    const result = await handleUserCreate({
-      email,
-      name: username,
-      password,
-      userPhoto,
-    });
+    try {
+      if (!editionMode) {
+        // Handle user creation and wait for the response
+        result = await handleUserCreate({
+          email,
+          name: username,
+          password,
+          userPhoto,
+        });
+      } else {
+        // Handle user update and wait for the response
+        result = await handleUpdateUser({
+          name: username,
+          picture: userPhoto,
+        });
+      }
 
-    if (result) {
-      reset();
+      if (result !== null) {
+        reset();
+      } else {
+        // Handle unsuccessful response if needed
+        console.error("Operation failed.");
+      }
+    } catch (error) {
+      // Handle errors
+      console.error("An error occurred:", error);
     }
   };
 
   // UI
   return (
     <>
-      {modalUserCreate && !modalUserLogin && (
+      {modalUserCreate && (
         <div className="UserCreateForm">
           <div className=" form-container absolute z-50">
             <div className="absolute top-0 right-0 p-2">
@@ -61,15 +82,15 @@ export const UserCreateForm = () => {
                 <CloseIcon />
               </button>
             </div>
-            <p className="title">Create Account</p>
-            <form
-              className="form"
-              onSubmit={handleSubmit(onSubmitFormCreateUser)}
-            >
+            <p className="title">
+              {!editionMode ? "Create Account" : "Update Account"}
+            </p>
+            <form className="form" onSubmit={handleSubmit(onSubmitFormUser)}>
               {/* Campo de email */}
               <div className="input-group">
                 <label>Email</label>
                 <input
+                  disabled={editionMode}
                   autoComplete="off"
                   type="email"
                   placeholder="Correo Electrónico"
@@ -106,7 +127,9 @@ export const UserCreateForm = () => {
               <div className="input-group flex ">
                 <div className="w-full justify-evenly flex mt-3 items-center ">
                   <label className="w-full whitespace-nowrap">
-                    Do you want add a user photo?
+                    {!editionMode
+                      ? "you want add a user photo"
+                      : "you want update a user photo"}
                   </label>
                   <input
                     className=""
@@ -125,8 +148,7 @@ export const UserCreateForm = () => {
               {/* Campo de photofile  */}
               {/* verify if checkbox is checked , should view a file input */}
               {addPhoto && (
-                <div className="input-group">
-                  <label>Photo</label>
+                <div className="input-group mb-3">
                   <input
                     type="file"
                     name="userPhoto"
@@ -144,63 +166,67 @@ export const UserCreateForm = () => {
                 </div>
               )}
               {/* Campo de password */}
-              <div className="input-group mb-8">
-                <label>Password</label>
-                <input
-                  autoComplete="off"
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="Contraseña"
-                  {...register("password", {
-                    required: {
-                      value: true,
-                      message: "Password is required",
-                    },
-                    validate: {
-                      minLength: (value) =>
-                        value.length >= 8 ||
-                        "Password must be at least 8 characters.",
-                      hasUpperCase: (value) =>
-                        /[A-Z]/.test(value) ||
-                        "Password must contain at least one uppercase letter.",
-                      hasLowerCase: (value) =>
-                        /[a-z]/.test(value) ||
-                        "Password must contain at least one lowercase letter.",
-                      hasNumber: (value) =>
-                        /\d/.test(value) ||
-                        "Password must contain at least one number.",
-                      hasSpecialChar: (value) =>
-                        /[@$!%*?&]/.test(value) ||
-                        "Password must contain at least one special character (@$!%*?&).",
-                    },
-                  })}
-                />
+              {!editionMode && (
+                <div className="input-group mb-8">
+                  <label>Password</label>
+                  <input
+                    autoComplete="off"
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Contraseña"
+                    {...register("password", {
+                      required: {
+                        value: true,
+                        message: "Password is required",
+                      },
+                      validate: {
+                        minLength: (value) =>
+                          value.length >= 8 ||
+                          "Password must be at least 8 characters.",
+                        hasUpperCase: (value) =>
+                          /[A-Z]/.test(value) ||
+                          "Password must contain at least one uppercase letter.",
+                        hasLowerCase: (value) =>
+                          /[a-z]/.test(value) ||
+                          "Password must contain at least one lowercase letter.",
+                        hasNumber: (value) =>
+                          /\d/.test(value) ||
+                          "Password must contain at least one number.",
+                        hasSpecialChar: (value) =>
+                          /[@$!%*?&]/.test(value) ||
+                          "Password must contain at least one special character (@$!%*?&).",
+                      },
+                    })}
+                  />
 
-                {/* Mostrar todos los errores progresivamente */}
-                <span className="text-red-500 text-xs">
-                  {errors.password?.type === "minLength" &&
-                    errors.password.message}
-                  {errors.password?.type === "hasUpperCase" &&
-                    errors.password.message}
-                  {errors.password?.type === "hasLowerCase" &&
-                    errors.password.message}
-                  {errors.password?.type === "hasNumber" &&
-                    errors.password.message}
-                  {errors.password?.type === "hasSpecialChar" &&
-                    errors.password.message}
-                </span>
+                  {/* Mostrar todos los errores progresivamente */}
+                  <span className="text-red-500 text-xs">
+                    {errors.password?.type === "minLength" &&
+                      errors.password.message}
+                    {errors.password?.type === "hasUpperCase" &&
+                      errors.password.message}
+                    {errors.password?.type === "hasLowerCase" &&
+                      errors.password.message}
+                    {errors.password?.type === "hasNumber" &&
+                      errors.password.message}
+                    {errors.password?.type === "hasSpecialChar" &&
+                      errors.password.message}
+                  </span>
 
-                {/* Mensaje explicativo sobre los requisitos de la contraseña */}
-                <span className="text-gray-500 text-xs flex mt-3">
-                  The password must be at least 8 characters long, include at
-                  least one uppercase letter, one lowercase letter, one number,
-                  and one special character (@$!%*?&).
-                </span>
-              </div>
+                  {/* Mensaje explicativo sobre los requisitos de la contraseña */}
+                  <span className="text-gray-500 text-xs flex mt-3">
+                    The password must be at least 8 characters long, include at
+                    least one uppercase letter, one lowercase letter, one
+                    number, and one special character (@$!%*?&).
+                  </span>
+                </div>
+              )}
 
               {/* Botón de login */}
-              <button className="sign">Create account</button>
+              <button className="sign">
+                {editionMode ? "Update profile" : "Create account"}
+              </button>
             </form>
           </div>
           <Footer />

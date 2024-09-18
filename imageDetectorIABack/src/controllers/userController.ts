@@ -121,15 +121,18 @@ export async function userUpdate(
     }
 
     // Actualiza el usuario llamando a updateUser
-    const result = await updateUser(userId, updateFields);
+    const updatedUser = await updateUser(userId, updateFields);
 
-    // Verifica si el usuario fue actualizado (si se afectó alguna fila)
-    if (result.rowCount === 0) {
+    // Verifica si el usuario fue encontrado y actualizado
+    if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
     // Devuelve un mensaje de éxito
-    return res.status(200).json({ message: "User updated successfully" });
+    return res.status(200).json({
+      message: "User updated successfully",
+      user: updatedUser.rows[0],
+    });
   } catch (error) {
     console.error("Error updating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });

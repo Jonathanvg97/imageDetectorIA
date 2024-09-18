@@ -3,7 +3,7 @@ import "./loaderSignUp.css";
 // eslint-disable-next-line react/prop-types
 export const LoaderSignUp = ({ message = "Logging in ..." }) => {
   return (
-    <>
+    <div className="loaderFondo">
       <div className="scene ">
         <div className="forest">
           <div className="tree tree1">
@@ -118,6 +118,6 @@ export const LoaderSignUp = ({ message = "Logging in ..." }) => {
       <div className="flex justify-center">
         <h1 className="loader-text">{message}</h1>
       </div>
-    </>
+    </div>
   );
 };

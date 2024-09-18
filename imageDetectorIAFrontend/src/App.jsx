@@ -13,24 +13,21 @@ import { SettingsProfile } from "./components/settingsProfile/settingsProfile";
 
 function App() {
   //zustand
-  const { loadingOAuth, modalUserLogin, user } = useImageStore();
+  const { user } = useImageStore();
   return (
     <Router>
       <div className="absolute">
         <FloatLogin />
         <UserProfile />
       </div>
+      <RoutesConfig />
+      <div className="z-50">
+        <ToastContainer />
+      </div>
+      <AuthLogin />
+      <UserCreateForm />
       {user && <SettingsProfile />}
-
-      <ToastContainer />
-      {!loadingOAuth && modalUserLogin ? (
-        <AuthLogin>
-          <RoutesConfig />
-          <Footer />
-        </AuthLogin>
-      ) : (
-        <UserCreateForm />
-      )}
+      <Footer />
     </Router>
   );
 }

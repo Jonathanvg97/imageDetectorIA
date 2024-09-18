@@ -4,14 +4,15 @@ import { verifyGoogleToken } from "../server/authGoogle";
 import { authUser } from "../server/authUser";
 import { createUser } from "../server/createUser";
 import { deleteUser } from "../server/deleteUser";
+import { updateUser } from "../server/updateUser";
 export const useAuth = () => {
   //Zustand
   const {
-    setCloseModalGoogle,
     setLoadingAuth,
     setModalUserCreate,
     setModalUserLogin,
     setUser,
+    setEditionMode,
   } = useImageStore();
 
   //Función para iniciar sesión con Google
@@ -36,13 +37,11 @@ export const useAuth = () => {
         );
 
         setLoadingAuth(false);
-
-        // Cierra el modal de login
-        setCloseModalGoogle(true);
+        // Solo cierra el modal si el login es exitoso
+        setModalUserLogin(false);
       } else {
         // Maneja el caso en el que la verificación falla
         toast.error("Login failed. Please try again.");
-        setLoadingAuth(false);
       }
     } catch (error) {
       // Maneja errores inesperados
@@ -80,17 +79,17 @@ export const useAuth = () => {
         );
 
         setLoadingAuth(false);
+        // Solo cierra el modal si el login es exitoso
+        setModalUserLogin(false);
       } else {
         // Si la autenticación falla
         toast.error("Login failed. Please try again.");
-        setLoadingAuth(false);
       }
     } catch (error) {
       // Maneja errores inesperados
       console.error("Error in handleLoginSuccess:", error);
       toast.error("Credentials invalid. Please try again.");
     } finally {
-      // Asegura que el estado de carga se actualice en cualquier caso
       setLoadingAuth(false);
     }
   };
@@ -101,9 +100,22 @@ export const useAuth = () => {
     setModalUserCreate(true);
   };
 
+  const handleOpenModalEditAccount = () => {
+    setModalUserLogin(false);
+    setModalUserCreate(true);
+    setEditionMode(true);
+  };
+
   //función para cerrar el modal de creación de cuenta
   const handleCloseModalCreateAccount = () => {
     setModalUserCreate(false);
+    setModalUserLogin(true);
+  };
+
+  //función para cerrar el modal de editar cuenta
+  const handleCloseModalEditAccount = () => {
+    setModalUserCreate(false);
+    setEditionMode(false);
     setModalUserLogin(true);
   };
 
@@ -125,7 +137,6 @@ export const useAuth = () => {
       if (result) {
         toast.success("User created successfully");
         handleCloseModalCreateAccount();
-        setModalUserLogin(true);
       } else {
         toast.error("User creation failed. Please try again.");
       }
@@ -175,13 +186,50 @@ export const useAuth = () => {
     }
   };
 
+  //Función para actualizar el usuario
+  const handleUpdateUser = async ({ name, picture }) => {
+    try {
+      // Obtener el usuario almacenado en sessionStorage y parsearlo
+      const storedUser = JSON.parse(sessionStorage.getItem("user"));
+
+      // Verificar que el usuario existe y que el campo id está presente
+      if (storedUser && storedUser.id) {
+        // Actualizar el usuario a través de la API
+        const response = await updateUser(storedUser.id, name, picture);
+
+        // Extraer solo los datos del usuario de la respuesta
+        const updatedUser = response.user;
+
+        // Actualizar el usuario en sessionStorage sin el mensaje
+        const newUserData = { ...storedUser, ...updatedUser }; // Combina los datos actualizados con los anteriores
+        sessionStorage.setItem("user", JSON.stringify(newUserData));
+
+        // Actualizar el estado de `user` si tienes uno en React
+        setUser(newUserData);
+
+        // Mostrar mensaje de éxito
+        toast.success("User updated successfully");
+
+        // Cerrar el modal de edición
+        handleCloseModalEditAccount();
+      } else {
+        throw new Error("User ID not found");
+      }
+    } catch (error) {
+      console.error("Error in updateUser:", error.message);
+      toast.error("An error occurred during user update. Please try again.");
+    }
+  };
+
   return {
     handleLoginSuccessWithGoogle,
     handleLoginError,
     handleLoginSuccessWithoutGoogle,
     handleOpenModalCreateAccount,
+    handleOpenModalEditAccount,
     handleCloseModalCreateAccount,
     handleUserCreate,
     handleDeleteUser,
+    handleUpdateUser,
   };
 };

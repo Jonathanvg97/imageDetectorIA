@@ -108,9 +108,7 @@ export const UserProfile = () => {
           )}
         </div>
       ) : (
-        <div className="w-screen">
-          <LoaderSignUp message="Logging out ..." />
-        </div>
+        <LoaderSignUp message="Logging out ..." />
       )}
     </>
   );
