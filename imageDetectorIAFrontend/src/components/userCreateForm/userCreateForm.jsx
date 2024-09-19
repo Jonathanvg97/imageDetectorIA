@@ -4,20 +4,22 @@ import "./userCreateForm.css";
 import { CloseIcon } from "../../assets/icons";
 import { useImageStore } from "../../stores/useImageStore";
 import { useAuth } from "../../hooks/useAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Footer } from "../footer/footer";
 
 export const UserCreateForm = () => {
   // Hooks
-  const { handleCloseModalCreateAccount, handleUserCreate, handleUpdateUser } =
-    useAuth();
+  const {
+    handleCloseModalCreateAccount,
+    handleCloseModalUpdateAccount,
+    handleUserCreate,
+    handleUpdateUser,
+  } = useAuth();
   const { modalUserCreate, editionMode } = useImageStore();
 
-  // Get edition data if in edit mode
-  const editionDataString = editionMode ? sessionStorage.getItem("user") : null;
-  const editionData = editionDataString ? JSON.parse(editionDataString) : {};
-
-  const [addPhoto, setAddPhoto] = useState(editionData?.picture ? true : false);
+  //Local state
+  const [editionData, setEditionData] = useState(null);
+  const [addPhoto, setAddPhoto] = useState(false);
   // React Hook Form
   const {
     register,
@@ -26,13 +28,40 @@ export const UserCreateForm = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: editionMode ? editionData.email || "" : "",
+      email: "",
       password: "",
-      username: editionMode ? editionData.name || "" : "",
-      photofile: editionMode && editionData.picture ? true : false,
-      userPhoto: editionMode ? editionData.picture || "" : "",
+      username: "",
+      photofile: false,
+      userPhoto: "",
     },
   });
+
+  // Cargar y actualizar datos de edición cuando `editionMode` sea `true`
+  useEffect(() => {
+    if (editionMode) {
+      const editionDataString = sessionStorage.getItem("user");
+      if (editionDataString) {
+        const parsedData = JSON.parse(editionDataString);
+        setEditionData(parsedData);
+        setAddPhoto(parsedData.picture ? true : false);
+      }
+    } else {
+      setEditionData(null);
+      setAddPhoto(false);
+    }
+  }, [editionMode]);
+
+  // Actualizar valores del formulario cuando `editionData` cambie
+  useEffect(() => {
+    if (editionData) {
+      reset({
+        email: editionData.email || "",
+        username: editionData.name || "",
+        photofile: editionData.picture ? true : false,
+        userPhoto: editionData.picture || "",
+      });
+    }
+  }, [editionData, reset]);
 
   //Function for checking if photo is added
   const handleAddPhoto = () => {
@@ -78,7 +107,13 @@ export const UserCreateForm = () => {
         <div className="UserCreateForm">
           <div className=" form-container absolute z-50">
             <div className="absolute top-0 right-0 p-2">
-              <button onClick={handleCloseModalCreateAccount}>
+              <button
+                onClick={
+                  !editionMode
+                    ? handleCloseModalCreateAccount
+                    : handleCloseModalUpdateAccount
+                }
+              >
                 <CloseIcon />
               </button>
             </div>

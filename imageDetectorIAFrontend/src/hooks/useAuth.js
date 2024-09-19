@@ -112,11 +112,15 @@ export const useAuth = () => {
     setModalUserLogin(true);
   };
 
+  const handleCloseModalUpdateAccount = () => {
+    setModalUserCreate(false);
+    setEditionMode(false);
+  };
+
   //función para cerrar el modal de editar cuenta
   const handleCloseModalEditAccount = () => {
     setModalUserCreate(false);
     setEditionMode(false);
-    setModalUserLogin(true);
   };
 
   const handleLoginError = () => {
@@ -165,7 +169,6 @@ export const useAuth = () => {
 
   //Function to delete user
   const handleDeleteUser = async () => {
-    // setLoadingAuth(true);
     try {
       // Obtener el usuario almacenado en sessionStorage y parsearlo
       const storedUser = JSON.parse(sessionStorage.getItem("user"));
@@ -228,6 +231,7 @@ export const useAuth = () => {
     handleOpenModalCreateAccount,
     handleOpenModalEditAccount,
     handleCloseModalCreateAccount,
+    handleCloseModalUpdateAccount,
     handleUserCreate,
     handleDeleteUser,
     handleUpdateUser,
