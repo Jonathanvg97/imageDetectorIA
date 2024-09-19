@@ -20,12 +20,12 @@ export const UserProfile = () => {
       googleLogout(); // Cierra la sesión de Google
       sessionStorage.removeItem("user"); // Elimina el usuario guardado
       sessionStorage.removeItem("token"); // Elimina el token guardado
-      setUser(null); // Limpia el estado del usuario
       // Mostrar el mensaje de éxito y recargar la página después
       toast.success(
         "Logout successful, thank you for using Image Detector IA."
       );
       reset();
+      setUser(null);
       setLoadingOAuth(false);
     } catch (error) {
       toast.error(error);

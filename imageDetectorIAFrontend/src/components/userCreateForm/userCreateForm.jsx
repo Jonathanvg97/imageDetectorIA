@@ -1,7 +1,7 @@
 // src/components/login/userCreateForm.js
 import { useForm } from "react-hook-form";
 import "./userCreateForm.css";
-import { CloseIcon } from "../../assets/icons";
+import { AvatarImageIcon, CloseIcon } from "../../assets/icons";
 import { useImageStore } from "../../stores/useImageStore";
 import { useAuth } from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
@@ -184,17 +184,22 @@ export const UserCreateForm = () => {
               {/* verify if checkbox is checked , should view a file input */}
               {addPhoto && (
                 <div className="input-group mb-3">
-                  <input
-                    type="file"
-                    name="userPhoto"
-                    placeholder="Photo"
-                    {...register("userPhoto", {
-                      validate: (value) =>
-                        addPhoto && !value?.length
-                          ? "User photo is required"
-                          : true, // Condicional para mostrar error si no se sube foto y `addPhoto` es true
-                    })}
-                  />
+                  <button className="container-btn-file">
+                    <AvatarImageIcon />
+                    <input
+                      type="file"
+                      name="userPhoto"
+                      className="file"
+                      placeholder="Photo"
+                      {...register("userPhoto", {
+                        validate: (value) =>
+                          addPhoto && !value?.length
+                            ? "User photo is required"
+                            : true, // Condicional para mostrar error si no se sube foto y `addPhoto` es true
+                      })}
+                    />
+                    {editionData?.picture ? "Change Photo" : "Upload File"}
+                  </button>
                   <span className="text-red-500 text-xs">
                     {errors.userPhoto?.message}
                   </span>
