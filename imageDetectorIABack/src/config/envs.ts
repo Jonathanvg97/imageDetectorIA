@@ -19,4 +19,6 @@ export const envs = {
   DATABASE_URL: process.env.DATABASE_URL,
   JWT_SECRET: process.env.JWT_SECRET || "secret",
   JWT_EXPIRATION: process.env.JWT_EXPIRATION || "1h",
+  EMAIL_USER: process.env.EMAIL_USER,
+  EMAIL_PASS: process.env.EMAIL_PASS,
 };
