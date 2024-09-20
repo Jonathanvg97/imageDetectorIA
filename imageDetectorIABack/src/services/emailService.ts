@@ -3,16 +3,12 @@ import { envs } from "../config/envs";
 
 // Configura el transportador de Nodemailer
 const transporter = nodemailer.createTransport({
-  host: "smtp.office365.com",
+  host: "smtp.gmail.com",
   port: 587,
-  secure: false, // Cambiar a true si usas puerto 465
+  secure: false,
   auth: {
     user: envs.EMAIL_USER,
     pass: envs.EMAIL_PASS,
-  },
-  tls: {
-    ciphers: "SSLv3",
-    rejectUnauthorized: false,
   },
 });
 

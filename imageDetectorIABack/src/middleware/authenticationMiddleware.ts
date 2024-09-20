@@ -18,6 +18,11 @@ export const authenticationMiddleware = async (
     });
   }
 
+  // Si no se ha alcanzado el límite de peticiones, continuar sin verificar el token
+  if (!token) {
+    return next(); // Permitir continuar si no es necesario el token
+  }
+
   if (token) {
     try {
       // Verificación del token JWT generado por la aplicación
