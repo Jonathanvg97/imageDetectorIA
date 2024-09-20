@@ -14,6 +14,7 @@ export const useAuth = () => {
     setModalUserLogin,
     setUser,
     setEditionMode,
+    reset,
   } = useImageStore();
 
   const navigate = useNavigate();
@@ -183,6 +184,7 @@ export const useAuth = () => {
         setUser(null);
         sessionStorage.removeItem("user");
         sessionStorage.removeItem("token");
+        reset();
       } else {
         throw new Error("User ID not found");
       }
@@ -243,6 +245,6 @@ export const useAuth = () => {
     handleUserCreate,
     handleDeleteUser,
     handleUpdateUser,
-    forgotPassword, 
+    forgotPassword,
   };
 };
