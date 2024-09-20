@@ -1,8 +1,7 @@
-// src/services/emailService.ts
 import nodemailer from "nodemailer";
 import { envs } from "../config/envs";
 
-// Configura el transportador de Nodemailer
+// Configura el transportador de Nodemailer con las credenciales correctas
 const transporter = nodemailer.createTransport({
   host: "smtp.office365.com",
   port: 587,
@@ -16,11 +15,12 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Función para enviar el correo de restablecimiento de contraseña
 export const sendPasswordResetEmail = async (to: string, token: string) => {
   const mailOptions = {
-    from: envs.EMAIL_USER,
-    to,
-    subject: "Recuperación de Contraseña ImageDetectorIA",
+    from: envs.EMAIL_USER, // El correo del remitente
+    to, // El correo del destinatario
+    subject: "Recuperación de Contraseña - ImageDetectorIA",
     html: `
       <h1>Restablecer Contraseña</h1>
       <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
@@ -31,10 +31,12 @@ export const sendPasswordResetEmail = async (to: string, token: string) => {
   };
 
   try {
+    // Enviar el correo con await para manejar correctamente el envío
     await transporter.sendMail(mailOptions);
     console.log("Correo enviado correctamente");
   } catch (error) {
     console.error("Error enviando el correo:", error);
+    // Lanza un error para que el controlador lo maneje adecuadamente
     throw new Error("No se pudo enviar el correo");
   }
 };
