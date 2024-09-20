@@ -13,6 +13,7 @@ export const AuthLogin = () => {
     handleLoginSuccessWithGoogle,
     handleLoginSuccessWithoutGoogle,
     handleOpenModalCreateAccount,
+    forgotPassword,
   } = useAuth();
   const { loadingAuth, modalUserLogin, setModalUserLogin } = useImageStore();
 
@@ -96,9 +97,7 @@ export const AuthLogin = () => {
                     {errors.password?.message}
                   </span>
                   <div className="forgot">
-                    <a rel="noopener noreferrer" href="#">
-                      Forgot Password?
-                    </a>
+                    <button onClick={forgotPassword}>Forgot Password?</button>
                   </div>
                 </div>
                 {/* Botón de login */}

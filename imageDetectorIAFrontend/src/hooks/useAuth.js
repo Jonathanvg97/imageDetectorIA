@@ -5,6 +5,7 @@ import { authUser } from "../server/authUser";
 import { createUser } from "../server/createUser";
 import { deleteUser } from "../server/deleteUser";
 import { updateUser } from "../server/updateUser";
+import { useNavigate } from "react-router-dom";
 export const useAuth = () => {
   //Zustand
   const {
@@ -14,6 +15,8 @@ export const useAuth = () => {
     setUser,
     setEditionMode,
   } = useImageStore();
+
+  const navigate = useNavigate();
 
   //Función para iniciar sesión con Google
   const handleLoginSuccessWithGoogle = async (response) => {
@@ -224,6 +227,11 @@ export const useAuth = () => {
     }
   };
 
+  const forgotPassword = () => {
+    navigate("/forgot-password");
+    setModalUserLogin(false);
+  };
+
   return {
     handleLoginSuccessWithGoogle,
     handleLoginError,
@@ -235,5 +243,6 @@ export const useAuth = () => {
     handleUserCreate,
     handleDeleteUser,
     handleUpdateUser,
+    forgotPassword, 
   };
 };
