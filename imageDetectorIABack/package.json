@@ -7,7 +7,7 @@
     "dev": "cross-env NODE_ENV=development ts-node src/config/initDb.ts && cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only src/app.ts",
     "build": "tsc",
     "db:init": "ts-node src/config/initDb.ts",
-    "start": "cross-env NODE_ENV=production node dist/app.js"
+    "start": "NODE_ENV=production node dist/app.js"
   },
   "keywords": [
     "image",
