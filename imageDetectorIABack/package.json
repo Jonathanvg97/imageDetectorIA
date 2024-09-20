@@ -5,8 +5,9 @@
   "main": "src/app.ts",
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node src/config/initDb.ts && cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only src/app.ts",
-    "build": "tsc",
     "db:init": "ts-node src/config/initDb.ts",
+    "build": "tsc",
+    "prestart": "yarn build",
     "start": "NODE_ENV=production node dist/app.js"
   },
   "keywords": [
