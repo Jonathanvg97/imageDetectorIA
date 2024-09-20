@@ -4,12 +4,14 @@ import { envs } from "../config/envs";
 // Configura el transportador de Nodemailer
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
+  port: 465,
+  secure: true,
   auth: {
     user: envs.EMAIL_USER,
     pass: envs.EMAIL_PASS,
   },
+  // debug: true, // Activa el modo de depuración
+  // logger: true, // Muestra los logs de la actividad SMTP
 });
 
 export const sendPasswordResetEmail = async (to: string, token: string) => {
