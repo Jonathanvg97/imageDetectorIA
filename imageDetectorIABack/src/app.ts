@@ -1,25 +1,18 @@
 // app.ts
 import { server } from "./server";
 import { envs } from "./config/envs";
+import morgan from "morgan";
 import {
   authRoutes,
   dogDetectionRoutes,
   huggingFaceRoutes,
   huggingTranslateRoutes,
+  userRoutes,
 } from "./routes";
-import pool from "./config/bd/bd";
+import { checkDatabaseConnection } from "./config/bd/bd";
 
-// Función para probar la conexión a la base de datos
-async function checkDatabaseConnection() {
-  try {
-    // Ejecutar una consulta simple para verificar la conexión
-    await pool.query("SELECT NOW()");
-    console.log("Database connection successful");
-  } catch (error) {
-    console.error("Error connecting to the database:", error);
-    throw error; // Lanza el error para evitar iniciar el servidor si hay un problema
-  }
-}
+// Configura Morgan para registrar todas las solicitudes en la consola
+server.use(morgan("combined")); // Usa el formato 'combined' para un registro detallado
 
 // Llamar a la función para probar la conexión a la base de datos
 checkDatabaseConnection()
@@ -30,7 +23,7 @@ checkDatabaseConnection()
     server.use("/api", huggingFaceRoutes);
     server.use("/api", huggingTranslateRoutes);
     server.use("/api", dogDetectionRoutes);
-
+    server.use("/api", userRoutes);
     server.use("/auth", authRoutes);
 
     server.get("/", (req, res) => {

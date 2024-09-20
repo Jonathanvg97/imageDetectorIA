@@ -1,4 +1,5 @@
 // src/components/login/authLogin.js
+import { useForm } from "react-hook-form";
 import { GoogleLogin } from "@react-oauth/google";
 import "./authLogin.css";
 import { CloseIcon } from "../../assets/icons";
@@ -6,24 +7,47 @@ import { useImageStore } from "../../stores/useImageStore";
 import { useAuth } from "../../hooks/useAuth";
 import { LoaderSignUp } from "../utils/loader/loadersLogin/loaderSignUp";
 
-// eslint-disable-next-line react/prop-types
-export const AuthLogin = ({ children }) => {
+export const AuthLogin = () => {
   // Hooks
-  const { handleLoginSuccess } = useAuth();
-  const { closeModalGoogle, setCloseModalGoogle, loadingAuth } =
-    useImageStore();
+  const {
+    handleLoginSuccessWithGoogle,
+    handleLoginSuccessWithoutGoogle,
+    handleOpenModalCreateAccount,
+  } = useAuth();
+  const { loadingAuth, modalUserLogin, setModalUserLogin } = useImageStore();
+
+  // React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   // Functions
   const handleCloseModal = () => {
-    setCloseModalGoogle(true);
+    setModalUserLogin(false);
+  };
+
+  const onSubmitFormLogin = (data) => {
+    const { email, password } = data;
+    if (email && password) {
+      handleLoginSuccessWithoutGoogle({ email, password });
+    }
   };
 
   // UI
   return (
     <>
-      {!loadingAuth ? (
-        <div className="authLogin">
-          {!closeModalGoogle && (
+      {loadingAuth ? (
+        <LoaderSignUp message="Logging in ..." />
+      ) : (
+        modalUserLogin && (
+          <div className="authLogin">
             <div className="form-container absolute z-50">
               <div className="absolute top-0 right-0 p-2">
                 <button onClick={handleCloseModal}>
@@ -31,16 +55,27 @@ export const AuthLogin = ({ children }) => {
                 </button>
               </div>
               <p className="title">Login</p>
-              <form className="form" onSubmit={(e) => e.preventDefault()}>
+              <form
+                autoComplete="off"
+                className="form"
+                onSubmit={handleSubmit(onSubmitFormLogin)}
+              >
                 {/* Campo de email */}
                 <div className="input-group">
                   <label>Email</label>
                   <input
                     type="email"
-                    name="email"
-                    id="email"
                     placeholder="Correo Electrónico"
+                    {...register("email", {
+                      required: {
+                        value: true,
+                        message: "Email is required",
+                      },
+                    })}
                   />
+                  <span className="text-red-500 text-xs">
+                    {errors.email?.message}
+                  </span>
                 </div>
                 {/* Campo de password */}
                 <div className="input-group">
@@ -50,7 +85,16 @@ export const AuthLogin = ({ children }) => {
                     name="password"
                     id="password"
                     placeholder="Contraseña"
+                    {...register("password", {
+                      required: {
+                        value: true,
+                        message: "Password is required",
+                      },
+                    })}
                   />
+                  <span className="text-red-500 text-xs">
+                    {errors.password?.message}
+                  </span>
                   <div className="forgot">
                     <a rel="noopener noreferrer" href="#">
                       Forgot Password?
@@ -73,7 +117,7 @@ export const AuthLogin = ({ children }) => {
                   theme="outline"
                   buttonText="Log in with Google"
                   type="icon"
-                  onSuccess={handleLoginSuccess}
+                  onSuccess={handleLoginSuccessWithGoogle}
                   onError={() => console.log("Login Failed")}
                   prompt="consent"
                   scope="openid profile email"
@@ -82,22 +126,16 @@ export const AuthLogin = ({ children }) => {
               {/* Opción para crear una cuenta */}
               <p className="signup flex flex-col">
                 Don’t have an account?{" "}
-                <a rel="noopener noreferrer" href="#">
+                <button
+                  className="text-sky-500 text-sm font-bold"
+                  onClick={handleOpenModalCreateAccount}
+                >
                   Sign up
-                </a>
+                </button>
               </p>
             </div>
-          )}
-          <div
-            className={`w-full h-full ${
-              closeModalGoogle ? "opacity-100" : "opacity-60"
-            }`}
-          >
-            {children}
           </div>
-        </div>
-      ) : (
-        <LoaderSignUp message="Logging in ..." />
+        )
       )}
     </>
   );

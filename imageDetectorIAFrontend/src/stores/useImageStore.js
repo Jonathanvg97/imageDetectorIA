@@ -5,6 +5,11 @@ export const useImageStore = create(
   zukeeper((set) => ({
     imageURL: "",
     setImageURL: (imageURL) => set({ imageURL: imageURL }),
+    user: JSON.parse(sessionStorage.getItem("user")) || null,
+    setUser: (user) => {
+      sessionStorage.setItem("user", JSON.stringify(user));
+      set({ user });
+    },
     imageDescription: "",
     setImageDescription: (description) =>
       set({ imageDescription: description }),
@@ -19,14 +24,17 @@ export const useImageStore = create(
     loading: false,
     setLoading: (loading) => set({ loading: loading }),
     loadingAuth: false,
-    setLoadingAuth: (loadingAuth) => set({ loadingAuth: loadingAuth }),
+    setLoadingAuth: (loading) => set({ loadingAuth: loading }),
     loadingOAuth: false,
     setLoadingOAuth: (loadingOAuth) => set({ loadingOAuth: loadingOAuth }),
     isDetecting: false,
     setIsDetecting: (isDetecting) => set({ isDetecting: isDetecting }),
-    closeModalGoogle: true,
-    setCloseModalGoogle: (closeModalGoogle) =>
-      set({ closeModalGoogle: closeModalGoogle }),
+    modalUserCreate: false,
+    setModalUserCreate: (modalUserCreate) => set({ modalUserCreate }),
+    editionMode: false,
+    setEditionMode: (editionMode) => set({ editionMode }),
+    modalUserLogin: false,
+    setModalUserLogin: (modalUserLogin) => set({ modalUserLogin }),
     reset: () =>
       set({
         imageURL: "",
@@ -39,7 +47,9 @@ export const useImageStore = create(
         loadingAuth: false,
         loadingOAuth: false,
         isDetecting: false,
-        closeModalGoogle: true,
+        modalUserCreate: false,
+        modalUserLogin: false,
+        editionMode: false,
       }),
   }))
 );

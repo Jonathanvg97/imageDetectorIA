@@ -8,23 +8,26 @@ import { UserProfile } from "./components/userProfile/userProfile";
 import { FloatLogin } from "./components/floatLogin/floatLogin";
 import { useImageStore } from "./stores/useImageStore";
 import { Footer } from "./components/footer/footer";
+import { UserCreateForm } from "./components/userCreateForm/userCreateForm";
+import { SettingsProfile } from "./components/settingsProfile/settingsProfile";
 
 function App() {
   //zustand
-  const { loadingOAuth } = useImageStore();
+  const { user } = useImageStore();
   return (
     <Router>
       <div className="absolute">
         <FloatLogin />
         <UserProfile />
       </div>
-      <ToastContainer />
-      {!loadingOAuth && (
-        <AuthLogin>
-          <RoutesConfig />
-          <Footer />
-        </AuthLogin>
-      )}
+      <RoutesConfig />
+      <div className="z-50">
+        <ToastContainer />
+      </div>
+      <AuthLogin />
+      <UserCreateForm />
+      {user && <SettingsProfile />}
+      <Footer />
     </Router>
   );
 }

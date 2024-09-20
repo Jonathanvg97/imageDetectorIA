@@ -3,6 +3,20 @@
   color: #ffffff;
   font-family: "Arial", sans-serif;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 50%;
+  bottom: 0;
+  z-index: 60;
+}
+
+.loaderFondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2d3748; /* Fondo semi-transparente */
+  z-index: 40;
 }
 @keyframes stageBackground {
   0%,
@@ -206,7 +220,12 @@
   align-items: flex-end;
   width: 400px;
   height: 300px;
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
 }
 
 .forest {
