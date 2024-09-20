@@ -4,10 +4,15 @@ import { envs } from "../config/envs";
 
 // Configura el transportador de Nodemailer
 const transporter = nodemailer.createTransport({
-  service: "outlook", // Servicio de correo de hotmail
+  host: "smtp.office365.com",
+  port: 587,
+  secure: false,
   auth: {
     user: envs.EMAIL_USER,
     pass: envs.EMAIL_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false,
   },
 });
 
