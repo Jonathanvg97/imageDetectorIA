@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  passwordReset,
   userCreate,
   userDelete,
   userUpdate,
@@ -15,5 +16,6 @@ router.delete("/user/:userId", userDelete);
 router.post("/user/:userId", userUpdate);
 router.post("/login", userLogin);
 router.post("/password-reset", requestPasswordReset);
+router.post("/reset-password", passwordReset);
 
 export default router;

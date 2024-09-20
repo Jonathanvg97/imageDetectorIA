@@ -4,6 +4,8 @@ import { User } from "../types/user.types";
 import { v4 as uuidv4 } from "uuid";
 import { QueryResult } from "pg";
 import { UserUpdate } from "../types/updateUserInterface";
+import jwt from "jsonwebtoken";
+import { envs } from "../config/envs";
 
 /**
  * Creates a new user in the database and returns the newly created user.
@@ -96,4 +98,58 @@ export const updateUser = async (userId: string, updateFields: UserUpdate) => {
   // Ejecutar la consulta SQL
   const result: QueryResult<any> = await pool.query(query, values);
   return result;
+};
+
+/**
+ * Resets the password for a user using a JWT token and a new password.
+ *
+ * @param {string} token - The JWT token used to verify the user's identity.
+ * @param {string} newPassword - The new password to set for the user.
+ * @return {Promise<string>} A promise that resolves to a success message if the password is successfully reset.
+ * @throws {Error} If the token is invalid or the user is not found, or if there is an error resetting the password.
+ */
+export const resetPassword = async (token: string, newPassword: string) => {
+  try {
+    // Verifica si el token ya ha sido utilizado
+    const tokenResult = await pool.query(
+      "SELECT used FROM password_resets WHERE token = $1",
+      [token]
+    );
+    if (tokenResult.rows.length === 0 || tokenResult.rows[0].used) {
+      throw new Error("Token inválido o ya ha sido utilizado.");
+    }
+
+    // Verifica el token JWT
+    const decoded = jwt.verify(token, envs.JWT_SECRET) as { userId: string };
+
+    // Verifica si el usuario existe
+    const userResult = await pool.query("SELECT id FROM users WHERE id = $1", [
+      decoded.userId,
+    ]);
+    if (userResult.rows.length === 0) {
+      throw new Error("Token inválido o usuario no encontrado.");
+    }
+
+    const userId = userResult.rows[0].id;
+
+    // Hash de la nueva contraseña
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Actualiza la contraseña en la base de datos
+    await pool.query("UPDATE users SET password = $1 WHERE id = $2", [
+      hashedPassword,
+      userId,
+    ]);
+
+    // Marca el token como utilizado
+    await pool.query(
+      "UPDATE password_resets SET used = TRUE WHERE token = $1",
+      [token]
+    );
+
+    return "Contraseña actualizada con éxito.";
+  } catch (error) {
+    console.error(error);
+    throw new Error("error resetting password.");
+  }
 };

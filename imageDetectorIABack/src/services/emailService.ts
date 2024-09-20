@@ -4,7 +4,7 @@ import { envs } from "../config/envs";
 
 // Configura el transportador de Nodemailer
 const transporter = nodemailer.createTransport({
-  service: "outlook", // o el servicio de correo que estés usando
+  service: "outlook", // Servicio de correo de hotmail
   auth: {
     user: envs.EMAIL_USER,
     pass: envs.EMAIL_PASS,
@@ -15,7 +15,7 @@ export const sendPasswordResetEmail = async (to: string, token: string) => {
   const mailOptions = {
     from: envs.EMAIL_USER,
     to,
-    subject: "Recuperación de Contraseña",
+    subject: "Recuperación de Contraseña ImageDetectorIA",
     html: `
       <h1>Restablecer Contraseña</h1>
       <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>

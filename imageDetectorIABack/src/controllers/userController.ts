@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { createUser, deleteUser, updateUser } from "../services/userService";
+import {
+  createUser,
+  deleteUser,
+  resetPassword,
+  updateUser,
+} from "../services/userService";
 import { User } from "../types/user.types";
 import { emailRegex, passwordRegex } from "../utils/regex";
 import { uuidRegex } from "../utils/regex/idValidate";
@@ -138,3 +143,26 @@ export async function userUpdate(
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
+
+export const passwordReset = async (req: Request, res: Response) => {
+  const { token, newPassword } = req.body;
+
+  try {
+    const message = await resetPassword(token, newPassword);
+
+    if (!passwordRegex.test(newPassword)) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 8 characters long, contain at least one letter, one number, and one special character",
+      });
+    }
+    return res.status(200).json({ message });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).json({ error: error.message });
+    }
+    return res
+      .status(500)
+      .json({ error: "Error inesperado al restablecer la contraseña." });
+  }
+};
