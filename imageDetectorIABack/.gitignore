@@ -21,3 +21,7 @@ dist/
 .vercel
 
 *.vscode
+
+reports/
+
+coverage/
