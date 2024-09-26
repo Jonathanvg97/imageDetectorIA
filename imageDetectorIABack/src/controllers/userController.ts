@@ -74,14 +74,13 @@ export async function userDelete(
 ): Promise<Response> {
   try {
     const { userId } = req.params;
-    // Validar el formato del ID
-    if (!uuidRegex.test(userId)) {
-      return res.status(400).json({ message: "Invalid ID format" });
-    }
-
     // Verificar si se proporciona un ID en los parámetros
     if (!userId) {
       return res.status(400).json({ message: "ID is required" });
+    }
+    // Validar el formato del ID
+    if (!uuidRegex.test(userId)) {
+      return res.status(400).json({ message: "Invalid ID format" });
     }
 
     // Elimina el usuario llamando a deleteUser
@@ -159,7 +158,9 @@ export const passwordReset = async (req: Request, res: Response) => {
     return res.status(200).json({ message });
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ error: error.message });
+      if (error.message === "Invalid token") {
+        return res.status(400).json({ error: error.message });
+      }
     }
     return res
       .status(500)

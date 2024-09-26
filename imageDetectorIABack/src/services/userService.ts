@@ -18,6 +18,10 @@ export const createUser = async (user: User): Promise<User> => {
     throw new Error("Password is required");
   }
 
+  if (!user.email) {
+    throw new Error("email is required");
+  }
+
   // Hash the password
   const hashedPassword = await bcrypt.hash(user.password, 10);
 
@@ -149,7 +153,6 @@ export const resetPassword = async (token: string, newPassword: string) => {
 
     return "Contraseña actualizada con éxito.";
   } catch (error) {
-    console.error(error);
-    throw new Error("error resetting password.");
+    throw error;
   }
 };
