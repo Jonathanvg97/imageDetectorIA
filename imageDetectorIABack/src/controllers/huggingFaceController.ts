@@ -24,9 +24,11 @@ export async function convertImageToText(
     const result = await imageToText(imageURL, model);
 
     // Enviar la respuesta
-    return res.json(result);
+    return res.status(200).json(result); 
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "An error occurred while processing the image" });
+    return res
+      .status(500)
+      .json({ error: "An error occurred while processing the image" });
   }
 }

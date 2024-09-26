@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { userDelete } from "../../../../../src/controllers/userController";
-import { deleteUser } from "../../../../../src/services/userService";
+import { userDelete } from "../../../../src/controllers/userController";
+import { deleteUser } from "../../../../src/services/userService";
 
 // Mock the deleteUser service
-jest.mock("../../../../../src/services/userService");
+jest.mock("../../../../src/services/userService");
 
 describe("userDelete", () => {
   let req: { params: { userId?: string } }; // Explicitly define params

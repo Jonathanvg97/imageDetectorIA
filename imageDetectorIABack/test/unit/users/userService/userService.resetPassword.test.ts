@@ -1,11 +1,11 @@
-import pool from "../../../../../src/config/bd/bd";
+import pool from "../../../../src/config/bd/bd";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { resetPassword } from "../../../../../src/services/userService";
+import { resetPassword } from "../../../../src/services/userService";
 
 jest.mock("bcrypt");
 jest.mock("jsonwebtoken");
-jest.mock("../../../../../src/config/bd/bd");
+jest.mock("../../../../src/config/bd/bd");
 
 describe("resetPassword", () => {
   const token = "mockToken";

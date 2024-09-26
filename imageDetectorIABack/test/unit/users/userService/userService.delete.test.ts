@@ -1,7 +1,7 @@
-import pool from "../../../../../src/config/bd/bd";
-import { deleteUser } from "../../../../../src/services/userService";
+import pool from "../../../../src/config/bd/bd";
+import { deleteUser } from "../../../../src/services/userService";
 
-jest.mock("../../../../../src/config/bd/bd");
+jest.mock("../../../../src/config/bd/bd");
 
 describe("deleteUser", () => {
   beforeEach(() => {

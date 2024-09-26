@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { userCreate } from "../../../../../src/controllers/userController";
-import { createUser } from "../../../../../src/services/userService";
+import { userCreate } from "../../../../src/controllers/userController";
+import { createUser } from "../../../../src/services/userService";
 
 //Mockear server createUSer
-jest.mock("../../../../../src/services/userService");
+jest.mock("../../../../src/services/userService");
 
 describe("userCreate", () => {
   let req: Partial<Request>;

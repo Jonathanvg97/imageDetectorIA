@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
-import { envs } from "../../../../../src/config/envs";
-import { sendPasswordResetEmail } from "../../../../../src/services/emailService";
+import { envs } from "../../../../src/config/envs";
+import { sendPasswordResetEmail } from "../../../../src/services/emailService";
 
 // Mock de nodemailer
 jest.mock("nodemailer", () => {

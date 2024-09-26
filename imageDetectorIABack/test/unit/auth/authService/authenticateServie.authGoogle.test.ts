@@ -1,5 +1,5 @@
-import { envs } from "../../../../../src/config/envs";
-import { verifyGoogleToken } from "../../../../../src/services/authGoogleService";
+import { envs } from "../../../../src/config/envs";
+import { verifyGoogleToken } from "../../../../src/services/authGoogleService";
 
 // Crea un mock de la clase OAuth2Client
 jest.mock("google-auth-library", () => {

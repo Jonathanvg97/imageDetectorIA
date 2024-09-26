@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import pool from "../../../../../src/config/bd/bd";
-import { requestPasswordReset } from "../../../../../src/controllers/emailController";
-import { sendPasswordResetEmail } from "../../../../../src/services/emailService";
-import { envs } from "../../../../../src/config/envs";
+import pool from "../../../../src/config/bd/bd";
+import { requestPasswordReset } from "../../../../src/controllers/emailController";
+import { sendPasswordResetEmail } from "../../../../src/services/emailService";
+import { envs } from "../../../../src/config/envs";
 
 // Mock external dependencies
-jest.mock("../../../../../src/config/bd/bd");
+jest.mock("../../../../src/config/bd/bd");
 jest.mock("jsonwebtoken");
-jest.mock("../../../../../src/services/emailService");
+jest.mock("../../../../src/services/emailService");
 
 describe("requestPasswordReset - Unit Test", () => {
   let req: Partial<Request>;

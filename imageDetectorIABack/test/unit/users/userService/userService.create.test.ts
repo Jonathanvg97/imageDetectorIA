@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import pool from "../../../../../src/config/bd/bd";
-import { createUser } from "../../../../../src/services/userService";
-import { User } from "../../../../../src/types/user.types";
+import pool from "../../../../src/config/bd/bd";
+import { createUser } from "../../../../src/services/userService";
+import { User } from "../../../../src/types/user.types";
 
 jest.mock("bcrypt"); // Mockeamos bcrypt
 jest.mock("uuid"); // Mockeamos uuid
-jest.mock("../../../../../src/config/bd/bd"); // Mockeamos el pool
+jest.mock("../../../../src/config/bd/bd"); // Mockeamos el pool
 
 describe("createUser", () => {
   beforeEach(() => {

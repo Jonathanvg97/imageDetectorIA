@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { verifyGoogleToken } from "../../../../../src/services/authGoogleService";
-import pool from "../../../../../src/config/bd/bd";
-import { googleLogin } from "../../../../../src/controllers/authGoogleController";
+import { verifyGoogleToken } from "../../../../src/services/authGoogleService";
+import pool from "../../../../src/config/bd/bd";
+import { googleLogin } from "../../../../src/controllers/authGoogleController";
 
 // Mock de las dependencias
-jest.mock("../../../../../src/services/authGoogleService");
-jest.mock("../../../../../src/config/bd/bd");
+jest.mock("../../../../src/services/authGoogleService");
+jest.mock("../../../../src/config/bd/bd");
 
 describe("Auth Controller - googleLogin", () => {
   const mockRequest = (token: string) =>

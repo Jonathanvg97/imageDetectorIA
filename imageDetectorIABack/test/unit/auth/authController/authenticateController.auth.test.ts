@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { authenticateUser } from "../../../../../src/services/authService";
-import { userLogin } from "../../../../../src/controllers/authController";
+import { authenticateUser } from "../../../../src/services/authService";
+import { userLogin } from "../../../../src/controllers/authController";
 
-jest.mock("../../../../../src/services/authService"); // Mockea el servicio
+jest.mock("../../../../src/services/authService"); // Mockea el servicio
 
 describe("userLogin - Unit Test", () => {
   const mockRequest = (body = {}) =>

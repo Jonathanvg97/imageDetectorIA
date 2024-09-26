@@ -1,12 +1,12 @@
-import { authenticateUser } from "./../../../../../src/services/authService";
+import { authenticateUser } from "./../../../../src/services/authService";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import pool from "../../../../../src/config/bd/bd";
-import { envs } from "../../../../../src/config/envs";
+import pool from "../../../../src/config/bd/bd";
+import { envs } from "../../../../src/config/envs";
 
 jest.mock("bcrypt");
 jest.mock("jsonwebtoken");
-jest.mock("../../../../../src/config/bd/bd");
+jest.mock("../../../../src/config/bd/bd");
 
 describe("authenticateUser - Unit Test", () => {
   const mockUser = {

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { userUpdate } from "../../../../../src/controllers/userController";
-import { updateUser } from "../../../../../src/services/userService";
+import { userUpdate } from "../../../../src/controllers/userController";
+import { updateUser } from "../../../../src/services/userService";
 
 // Mock the updateUser service
-jest.mock("../../../../../src/services/userService");
+jest.mock("../../../../src/services/userService");
 
 describe("userUpdate", () => {
   let req: {

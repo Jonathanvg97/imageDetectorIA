@@ -1,8 +1,8 @@
-import pool from "../../../../../src/config/bd/bd";
-import { updateUser } from "../../../../../src/services/userService";
-import { UserUpdate } from "../../../../../src/types/updateUserInterface";
+import pool from "../../../../src/config/bd/bd";
+import { updateUser } from "../../../../src/services/userService";
+import { UserUpdate } from "../../../../src/types/updateUserInterface";
 
-jest.mock("../../../../../src/config/bd/bd");
+jest.mock("../../../../src/config/bd/bd");
 
 describe("updateUser", () => {
   it("should update a user's fields and return the updated user", async () => {

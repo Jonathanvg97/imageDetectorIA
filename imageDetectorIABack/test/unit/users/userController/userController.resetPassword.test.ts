@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { passwordReset } from "../../../../../src/controllers/userController";
-import { resetPassword } from "../../../../../src/services/userService";
+import { passwordReset } from "../../../../src/controllers/userController";
+import { resetPassword } from "../../../../src/services/userService";
 
 // Mock the resetPassword service
-jest.mock("../../../../../src/services/userService");
+jest.mock("../../../../src/services/userService");
 
 describe("passwordReset", () => {
   let req: Partial<Request>;
