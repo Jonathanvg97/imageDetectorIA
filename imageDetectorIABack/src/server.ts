@@ -9,3 +9,4 @@ server.use(express.json());
 server.use(cookieParser());
 server.use(cors({ origin: envs.FRONTEND_BASE_URL }));
 server.use(express.urlencoded({ extended: true }));
+

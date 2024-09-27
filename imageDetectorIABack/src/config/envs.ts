@@ -2,7 +2,11 @@ import * as dotenv from "dotenv";
 
 // Carga el archivo .env correcto dependiendo del entorno
 const envFile =
-  process.env.NODE_ENV === "development" ? ".env.development" : ".env";
+  process.env.NODE_ENV === "development"
+    ? ".env.development"
+    : process.env.NODE_ENV === "test"
+    ? ".env.test"
+    : ".env";
 dotenv.config({ path: envFile });
 
 export const envs = {

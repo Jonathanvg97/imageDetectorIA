@@ -24,7 +24,7 @@ export async function convertImageToText(
     const result = await imageToText(imageURL, model);
 
     // Enviar la respuesta
-    return res.status(200).json(result); 
+    return res.status(200).json({ generated_text: result }); // Wrap result in an object
   } catch (error) {
     console.error(error);
     return res
