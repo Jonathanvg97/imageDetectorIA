@@ -16,13 +16,6 @@ app.post("/api/convert-image-to-text", (req, res) => {
 });
 
 describe("POST /api/convert-image-to-text", () => {
-  beforeAll(() => {
-    // Inicia el servidor en el puerto 4001 antes de ejecutar las pruebas
-    app.listen(4001, () => {
-      console.log("Server running on port 4001");
-    });
-  });
-
   it("should convert image to text and return the result", async () => {
     (imageToText as jest.Mock).mockResolvedValue(
       "This is an image description."
