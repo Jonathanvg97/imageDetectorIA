@@ -17,7 +17,7 @@ export const convertImageToText = async (imageURL) => {
       }
     );
     // La respuesta ya está en formato JSON
-    return response.data;
+    return response.data.generated_text;
   } catch (error) {
     // Manejo del error
     const errorMessage =
