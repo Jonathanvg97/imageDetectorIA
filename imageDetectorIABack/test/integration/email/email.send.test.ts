@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json()); // Analizar cuerpos JSON
 app.post("/api/password-reset", requestPasswordReset); // Ruta para la prueba
 
-describe("POST /api/request-password-reset", () => {
+describe("POST /api/password-reset", () => {
   beforeEach(() => {
     jest.clearAllMocks(); // Limpia todos los mocks antes de cada prueba
   });

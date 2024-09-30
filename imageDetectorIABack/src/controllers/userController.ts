@@ -150,15 +150,16 @@ export async function userUpdate(
 export const passwordReset = async (req: Request, res: Response) => {
   const { token, newPassword } = req.body;
 
+  // Check if the password meets the criteria first
+  if (!passwordRegex.test(newPassword)) {
+    return res.status(400).json({
+      message:
+        "Password must be at least 8 characters long, contain at least one letter, one number, and one special character",
+    });
+  }
+
   try {
     const message = await resetPassword(token, newPassword);
-
-    if (!passwordRegex.test(newPassword)) {
-      return res.status(400).json({
-        message:
-          "Password must be at least 8 characters long, contain at least one letter, one number, and one special character",
-      });
-    }
     return res.status(200).json({ message });
   } catch (error) {
     if (error instanceof Error) {
