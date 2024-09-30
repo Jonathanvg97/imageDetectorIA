@@ -23,8 +23,6 @@ export const userLogin = async (
     // Devuelve una respuesta con el usuario autenticado
     return res.status(200).json({ user, token });
   } catch (error) {
-    console.error("Login error:", error);
-
     // Manejo de errores específicos de autenticación
     return res.status(401).json({
       message: "Credentials invalid", // Mensaje específico para errores de autenticación
