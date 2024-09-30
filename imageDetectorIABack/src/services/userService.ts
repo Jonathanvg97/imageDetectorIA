@@ -101,6 +101,11 @@ export const updateUser = async (userId: string, updateFields: UserUpdate) => {
 
   // Ejecutar la consulta SQL
   const result: QueryResult<any> = await pool.query(query, values);
+
+ // Verificar si alguna fila fue afectada
+  if (result.rowCount === 0) {
+    return null; // No se encontro el usuario
+  }
   return result;
 };
 

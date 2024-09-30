@@ -112,6 +112,11 @@ export async function userUpdate(
       return res.status(400).json({ message: "ID is required" });
     }
 
+    // Validar el formato del ID
+    if (!uuidRegex.test(userId)) {
+      return res.status(400).json({ message: "Invalid ID format" });
+    }
+
     // Crear el objeto de actualización solo con los campos proporcionados
     const updateFields: UserUpdate = {};
     if (name) updateFields.name = name;
@@ -138,7 +143,6 @@ export async function userUpdate(
       user: updatedUser.rows[0],
     });
   } catch (error) {
-    console.error("Error updating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
