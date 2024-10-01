@@ -21,6 +21,7 @@ describe("updateUser", () => {
     // Mockeamos la respuesta de la consulta de actualización
     (pool.query as jest.Mock).mockResolvedValue({
       rows: [mockUpdatedUser],
+      rowCount: 1, // Cantidad de filas actualizadas
     });
 
     // Ejecutamos la función
@@ -31,7 +32,11 @@ describe("updateUser", () => {
       expect.stringContaining("UPDATE users"),
       [userId, updateFields.name, updateFields.picture]
     );
-    expect(result.rows[0]).toEqual(mockUpdatedUser);
+    // Manejar el caso de null
+    expect(result).not.toBeNull();
+    if (result) {
+      expect(result.rows[0]).toEqual(mockUpdatedUser);
+    }
   });
 
   it("should throw an error if no fields to update are provided", async () => {

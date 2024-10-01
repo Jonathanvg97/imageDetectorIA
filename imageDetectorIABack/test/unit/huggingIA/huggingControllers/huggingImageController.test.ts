@@ -15,7 +15,10 @@ describe("convertImageToText", () => {
       status: jest.fn().mockReturnValue({ json }),
     };
     req = {
-      body: {},
+      body: {
+        imageURL: "http://example.com/image.jpg",
+        model: "your-model-name",
+      },
     };
   });
 
@@ -31,18 +34,24 @@ describe("convertImageToText", () => {
   });
 
   it("should convert image to text successfully", async () => {
-    const imageURL = "http://example.com/image.jpg";
-    const model = "your-model-name";
-    const expectedResult = { generated_text: "This is the extracted text." };
+    // Mock exitoso
+    (imageToText as jest.Mock).mockResolvedValue("This is a generated text ok.");
 
-    req.body = { imageURL, model };
-    (imageToText as jest.Mock).mockResolvedValue(expectedResult); // Mock successful response
-
+    // Llama al controlador
     await convertImageToText(req as Request, res as Response);
 
-    expect(imageToText).toHaveBeenCalledWith(imageURL, model);
-    expect(res.status).toHaveBeenCalledWith(200); // Expect status to be 200
-    expect(json).toHaveBeenCalledWith(expectedResult);
+    // Asegúrate de que la función haya sido llamada
+    expect(imageToText).toHaveBeenCalled(); // Verifica que se llamó
+    expect(imageToText).toHaveBeenCalledWith(
+      "http://example.com/image.jpg",
+      "your-model-name"
+    );
+
+    // Verifica la respuesta
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(json).toHaveBeenCalledWith({
+      generated_text: "This is a generated text ok.",
+    });
   });
 
   it("should handle errors and return 500", async () => {
