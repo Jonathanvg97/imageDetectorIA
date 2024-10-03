@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { userUpdate } from "../../../../src/controllers/userController";
 import { updateUser } from "../../../../src/services/userService";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
 
 // Mock the updateUser service
 jest.mock("../../../../src/services/userService");

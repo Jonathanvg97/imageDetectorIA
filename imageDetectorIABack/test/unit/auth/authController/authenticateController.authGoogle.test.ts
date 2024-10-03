@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { verifyGoogleToken } from "../../../../src/services/authGoogleService";
 import pool from "../../../../src/config/bd/bd";
 import { googleLogin } from "../../../../src/controllers/authGoogleController";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
+
 
 // Mock de las dependencias
 jest.mock("../../../../src/services/authGoogleService");

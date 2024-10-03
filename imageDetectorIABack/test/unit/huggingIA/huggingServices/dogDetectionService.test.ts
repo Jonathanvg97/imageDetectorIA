@@ -1,5 +1,6 @@
 import { HfInference } from "@huggingface/inference";
 import { detectDogInImage } from "../../../../src/services/dogDetectionService";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
 
 // Mock de HfInference y fetch
 jest.mock("@huggingface/inference");

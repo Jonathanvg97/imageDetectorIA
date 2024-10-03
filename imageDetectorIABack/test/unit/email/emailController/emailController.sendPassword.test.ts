@@ -4,6 +4,14 @@ import pool from "../../../../src/config/bd/bd";
 import { requestPasswordReset } from "../../../../src/controllers/emailController";
 import { sendPasswordResetEmail } from "../../../../src/services/emailService";
 import { envs } from "../../../../src/config/envs";
+import {
+  jest,
+  describe,
+  it,
+  expect,
+  beforeEach,
+  afterEach,
+} from "@jest/globals";
 
 // Mock external dependencies
 jest.mock("../../../../src/config/bd/bd");

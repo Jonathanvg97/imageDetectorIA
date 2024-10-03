@@ -5,9 +5,14 @@ import { envs } from "../config/envs";
 import pool from "../config/bd/bd";
 
 export const requestPasswordReset = async (req: Request, res: Response) => {
-  const { email } = req.body;
+  const { email, simulateError = false } = req.body;
 
   try {
+    // Simular un fallo en la base de datos
+    if (simulateError) {
+      throw new Error("Simulated database connection error");
+    }
+
     // Verifica si el correo existe en la base de datos
     const userResult = await pool.query(
       "SELECT id FROM users WHERE email = $1",

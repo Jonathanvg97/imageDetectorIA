@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { passwordReset } from "../../../../src/controllers/userController";
 import { resetPassword } from "../../../../src/services/userService";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
 
 // Mock the resetPassword service
 jest.mock("../../../../src/services/userService");

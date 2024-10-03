@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { userDelete } from "../../../../src/controllers/userController";
 import { deleteUser } from "../../../../src/services/userService";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
 
 // Mock the deleteUser service
 jest.mock("../../../../src/services/userService");

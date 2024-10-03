@@ -22,8 +22,12 @@ export async function userCreate(
   res: Response
 ): Promise<Response> {
   try {
-    const { email, name, picture, password } = req.body;
+    const { email, name, picture, password, simulateError = false } = req.body;
 
+    //simular un fallo en la base de datos
+    if (simulateError) {
+      throw new Error("Simulated database connection error");
+    }
     // Validar los datos requeridos
     if (!email || !password || !name) {
       return res
@@ -50,8 +54,6 @@ export async function userCreate(
 
     return res.status(201).json(result); // Responde con el código 201 (creado)
   } catch (error) {
-    console.error("Error creating user:", error);
-
     // Manejo de errores específicos de la base de datos o validaciones
     return res.status(500).json({
       message: "Internal Server Error",

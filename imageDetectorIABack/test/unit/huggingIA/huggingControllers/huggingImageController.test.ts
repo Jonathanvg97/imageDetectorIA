@@ -1,6 +1,7 @@
 import { convertImageToText } from "../../../../src/controllers/huggingFaceController";
 import { Request, Response } from "express";
 import { imageToText } from "../../../../src/services/huggingFaceService";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
 
 jest.mock("../../../../src/services/huggingFaceService"); // Mock the service
 
@@ -35,7 +36,9 @@ describe("convertImageToText", () => {
 
   it("should convert image to text successfully", async () => {
     // Mock exitoso
-    (imageToText as jest.Mock).mockResolvedValue("This is a generated text ok.");
+    (imageToText as jest.Mock).mockResolvedValue(
+      "This is a generated text ok."
+    );
 
     // Llama al controlador
     await convertImageToText(req as Request, res as Response);

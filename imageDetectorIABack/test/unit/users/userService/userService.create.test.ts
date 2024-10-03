@@ -3,6 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import pool from "../../../../src/config/bd/bd";
 import { createUser } from "../../../../src/services/userService";
 import { User } from "../../../../src/types/user.types";
+import { jest, describe, it, expect , beforeEach} from "@jest/globals";
+
 
 jest.mock("bcrypt"); // Mockeamos bcrypt
 jest.mock("uuid"); // Mockeamos uuid

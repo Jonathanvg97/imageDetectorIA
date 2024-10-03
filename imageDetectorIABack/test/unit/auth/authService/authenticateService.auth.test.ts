@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import pool from "../../../../src/config/bd/bd";
 import { envs } from "../../../../src/config/envs";
+import { jest, describe, it, expect } from "@jest/globals";
+
 
 jest.mock("bcrypt");
 jest.mock("jsonwebtoken");

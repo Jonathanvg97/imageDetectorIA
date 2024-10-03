@@ -1,6 +1,8 @@
 import pool from "../../../../src/config/bd/bd";
 import { updateUser } from "../../../../src/services/userService";
 import { UserUpdate } from "../../../../src/types/updateUserInterface";
+import { jest, describe, it, expect } from "@jest/globals";
+
 
 jest.mock("../../../../src/config/bd/bd");
 

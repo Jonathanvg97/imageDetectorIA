@@ -14,7 +14,7 @@ import { checkDatabaseConnection } from "./config/bd/bd";
 // Configura Morgan para registrar todas las solicitudes en la consola
 server.use(morgan("combined")); // Usa el formato 'combined' para un registro detallado
 
- const startServer = async () => {
+const startServer = async () => {
   try {
     await checkDatabaseConnection();
     const { PORT } = envs;
@@ -25,9 +25,6 @@ server.use(morgan("combined")); // Usa el formato 'combined' para un registro de
     server.use("/api", userRoutes);
     server.use("/auth", authRoutes);
 
-    server.get("/api/hello", (req, res) => {
-      res.status(200).send({ message: "Hola esta es una prueba!" });
-    });
     server.get("/", (req, res) => {
       res.send("Hola desde el servidor");
     });

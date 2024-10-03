@@ -1,5 +1,6 @@
 import { HfInference } from "@huggingface/inference";
 import { imageToText } from "../../../../src/services/huggingFaceService";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
 
 jest.mock("@huggingface/inference");
 

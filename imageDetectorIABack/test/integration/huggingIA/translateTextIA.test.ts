@@ -2,6 +2,8 @@ import request from "supertest";
 import express from "express";
 import { translateTextController } from "../../../src/controllers/huggingTranslateController";
 import { translateText } from "../../../src/services/huggingTranslateService";
+import { jest, describe, it, expect } from "@jest/globals";
+
 
 jest.mock("../../../src/services/huggingTranslateService");
 

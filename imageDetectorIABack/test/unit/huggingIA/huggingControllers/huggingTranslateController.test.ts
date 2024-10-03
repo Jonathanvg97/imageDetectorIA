@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { translateText } from "../../../../src/services/huggingTranslateService";
 import { translateTextController } from "../../../../src/controllers/huggingTranslateController";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
 
 // Mock the translateText service
 jest.mock("../../../../src/services/huggingTranslateService");

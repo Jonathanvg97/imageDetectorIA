@@ -1,6 +1,7 @@
 import { HfInference } from "@huggingface/inference";
 import { translateText } from "../../../../src/services/huggingTranslateService";
 import { envs } from "../../../../src/config/envs";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
 
 // Mock the entire "@huggingface/inference" module
 jest.mock("@huggingface/inference");

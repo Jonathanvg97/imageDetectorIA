@@ -1,5 +1,7 @@
 import pool from "../../../../src/config/bd/bd";
 import { deleteUser } from "../../../../src/services/userService";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
+
 
 jest.mock("../../../../src/config/bd/bd");
 

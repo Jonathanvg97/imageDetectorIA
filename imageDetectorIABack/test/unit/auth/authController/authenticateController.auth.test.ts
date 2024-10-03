@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { authenticateUser } from "../../../../src/services/authService";
 import { userLogin } from "../../../../src/controllers/authController";
+import { jest, describe, it, expect } from "@jest/globals";
 
 jest.mock("../../../../src/services/authService"); // Mockea el servicio
 

@@ -3,6 +3,8 @@ import express from "express";
 import { envs } from "../../../src/config/envs";
 import { convertImageToText } from "../../../src/controllers/huggingFaceController";
 import { imageToText } from "../../../src/services/huggingFaceService";
+import { jest, describe, it, expect } from "@jest/globals";
+
 
 jest.mock("../../../src/services/huggingFaceService");
 

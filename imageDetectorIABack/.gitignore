@@ -26,3 +26,6 @@ dist/
 reports/
 
 coverage/
+
+test-results/
+playwright-report/

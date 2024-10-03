@@ -2,6 +2,7 @@ import request from "supertest";
 import express from "express";
 import { detectDog } from "../../../src/controllers/dogDetectionController";
 import { detectDogInImage } from "../../../src/services/dogDetectionService";
+import { jest, describe, it, expect } from "@jest/globals";
 
 jest.mock("../../../src/services/dogDetectionService");
 

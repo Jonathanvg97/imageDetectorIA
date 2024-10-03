@@ -4,6 +4,8 @@ import { requestPasswordReset } from "../../../src/controllers/emailController";
 import { sendPasswordResetEmail } from "../../../src/services/emailService";
 import pool from "../../../src/config/bd/bd"; // Mocks para la BD
 import jwt from "jsonwebtoken";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
+
 
 // Mockear los servicios necesarios
 jest.mock("../../../src/services/emailService");

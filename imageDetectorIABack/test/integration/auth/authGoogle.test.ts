@@ -3,6 +3,8 @@ import express from "express";
 import { googleLogin } from "../../../src/controllers/authGoogleController";
 import { verifyGoogleToken } from "../../../src/services/authGoogleService";
 import { v4 as uuidv4 } from "uuid";
+import { jest, describe, it, expect , afterEach} from "@jest/globals";
+
 
 jest.mock("../../../src/services/authGoogleService");
 jest.mock("uuid"); // Mock the UUID generation

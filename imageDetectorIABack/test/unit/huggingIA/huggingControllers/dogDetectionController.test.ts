@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { detectDogInImage } from "../../../../src/services/dogDetectionService";
 import { detectDog } from "../../../../src/controllers/dogDetectionController";
+import { jest, describe, it, expect, beforeEach } from "@jest/globals";
 
 // Mock del servicio detectDogInImage
 jest.mock("../../../../src/services/dogDetectionService");
