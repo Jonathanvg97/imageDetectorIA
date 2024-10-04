@@ -14,9 +14,10 @@ import { checkDatabaseConnection } from "./config/bd/bd";
 // Configura Morgan para registrar todas las solicitudes en la consola
 server.use(morgan("combined")); // Usa el formato 'combined' para un registro detallado
 
- const startServer = async () => {
-  try {
-    await checkDatabaseConnection();
+// Llamar a la función para probar la conexión a la base de datos
+checkDatabaseConnection()
+  .then(() => {
+    // Una vez que la conexión esté establecida, inicia el servidor
     const { PORT } = envs;
 
     server.use("/api", huggingFaceRoutes);
@@ -25,26 +26,15 @@ server.use(morgan("combined")); // Usa el formato 'combined' para un registro de
     server.use("/api", userRoutes);
     server.use("/auth", authRoutes);
 
-    server.get("/api/hello", (req, res) => {
-      res.status(200).send({ message: "Hola esta es una prueba!" });
-    });
     server.get("/", (req, res) => {
       res.send("Hola desde el servidor");
     });
 
-    return server.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
-  } catch (error) {
+  })
+  .catch((error) => {
     console.error("Error al iniciar el servidor:", error);
-    process.exit(1);
-  }
-};
-
-// Exporta el servidor para las pruebas sin iniciarlo
-export { server, startServer };
-
-// iniciar el servidor directamente cuando se ejecute el archivo:
-if (require.main === module) {
-  startServer();
-}
+    process.exit(1); // Salir del proceso si hay un error
+  });
