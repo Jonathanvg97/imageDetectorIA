@@ -74,14 +74,13 @@ export async function userDelete(
 ): Promise<Response> {
   try {
     const { userId } = req.params;
-    // Validar el formato del ID
-    if (!uuidRegex.test(userId)) {
-      return res.status(400).json({ message: "Invalid ID format" });
-    }
-
     // Verificar si se proporciona un ID en los parámetros
     if (!userId) {
       return res.status(400).json({ message: "ID is required" });
+    }
+    // Validar el formato del ID
+    if (!uuidRegex.test(userId)) {
+      return res.status(400).json({ message: "Invalid ID format" });
     }
 
     // Elimina el usuario llamando a deleteUser
@@ -113,6 +112,11 @@ export async function userUpdate(
       return res.status(400).json({ message: "ID is required" });
     }
 
+    // Validar el formato del ID
+    if (!uuidRegex.test(userId)) {
+      return res.status(400).json({ message: "Invalid ID format" });
+    }
+
     // Crear el objeto de actualización solo con los campos proporcionados
     const updateFields: UserUpdate = {};
     if (name) updateFields.name = name;
@@ -139,7 +143,6 @@ export async function userUpdate(
       user: updatedUser.rows[0],
     });
   } catch (error) {
-    console.error("Error updating user:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
@@ -147,19 +150,22 @@ export async function userUpdate(
 export const passwordReset = async (req: Request, res: Response) => {
   const { token, newPassword } = req.body;
 
+  // Check if the password meets the criteria first
+  if (!passwordRegex.test(newPassword)) {
+    return res.status(400).json({
+      message:
+        "Password must be at least 8 characters long, contain at least one letter, one number, and one special character",
+    });
+  }
+
   try {
     const message = await resetPassword(token, newPassword);
-
-    if (!passwordRegex.test(newPassword)) {
-      return res.status(400).json({
-        message:
-          "Password must be at least 8 characters long, contain at least one letter, one number, and one special character",
-      });
-    }
     return res.status(200).json({ message });
   } catch (error) {
     if (error instanceof Error) {
-      return res.status(400).json({ error: error.message });
+      if (error.message === "Invalid token") {
+        return res.status(400).json({ error: error.message });
+      }
     }
     return res
       .status(500)

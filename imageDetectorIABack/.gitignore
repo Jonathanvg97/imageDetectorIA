@@ -5,6 +5,7 @@ dist/
 # Ignorar archivos de configuración local
 .env
 .env.development
+.env.test
 
 # Ignorar archivos de respaldo y caché
 *.log
@@ -21,3 +22,9 @@ dist/
 .vercel
 
 *.vscode
+
+reports/
+
+coverage/
+
+playwright-report/

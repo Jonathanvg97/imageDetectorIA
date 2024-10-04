@@ -1,9 +1,6 @@
 import { HfInference } from "@huggingface/inference";
 import { envs } from "../config/envs";
 
-// Crear una instancia del cliente de Hugging Face
-const hf = new HfInference(envs.TOKEN_HUGGING_FACE || "");
-
 /**
  * Tipo para los parámetros de traducción.
  */
@@ -18,10 +15,12 @@ interface TranslationParameters {
  * @param {number} languageTranslate - Idioma de traducción.
  * @returns {Promise<string>} - Resultado de la API.
  */
-export async function translateText(
+export const translateText = async (
   text: string,
   languageTranslate: number
-): Promise<string> {
+): Promise<string> => {
+  // Crear una instancia del cliente de Hugging Face
+  const hf = new HfInference(envs.TOKEN_HUGGING_FACE || "");
   // Configurar los parámetros de traducción según el idioma seleccionado
   const parameters: TranslationParameters = {
     src_lang: languageTranslate === 1 ? "en" : "es",
@@ -49,4 +48,4 @@ export async function translateText(
   } else {
     return result.translation_text;
   }
-}
+};

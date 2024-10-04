@@ -18,6 +18,10 @@ export const createUser = async (user: User): Promise<User> => {
     throw new Error("Password is required");
   }
 
+  if (!user.email) {
+    throw new Error("email is required");
+  }
+
   // Hash the password
   const hashedPassword = await bcrypt.hash(user.password, 10);
 
@@ -97,6 +101,11 @@ export const updateUser = async (userId: string, updateFields: UserUpdate) => {
 
   // Ejecutar la consulta SQL
   const result: QueryResult<any> = await pool.query(query, values);
+
+ // Verificar si alguna fila fue afectada
+  if (result.rowCount === 0) {
+    return null; // No se encontro el usuario
+  }
   return result;
 };
 
@@ -149,7 +158,6 @@ export const resetPassword = async (token: string, newPassword: string) => {
 
     return "Contraseña actualizada con éxito.";
   } catch (error) {
-    console.error(error);
-    throw new Error("error resetting password.");
+    throw error;
   }
 };
